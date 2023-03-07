@@ -31,21 +31,7 @@ class FrameworkContext:
     all_subscriptions: CompositeDisposable
     authenticated_sockets: Observable[models.EnhancedWebsocket]
     books: dict[str, Observable[Orderbook]]
-    cancel_all_http: Callable[
-        [Optional[CancelOrdersBatchParams]], Observable[HttpResponse]
-    ]
-    cancel_order_http: Callable[
-        [str, str | None, bool | None, bool | None], Observable[bool]
-    ]
-    create_order_http: Callable[
-        [OrderCreateParams],
-        Observable[OrderCreateResponse],
-    ]
-    get_book_http: Callable[
-        [market_depth.MarketDepthParams], Observable[market_depth.MarketDepthResponse]
-    ]
     exchange: binance
-    open_orders: Observable[dict]
     public_socket_connection: ConnectableObservable[models.WebsocketBundle]
     private_socket_connection: ConnectableObservable[models.WebsocketBundle]
     private_messages: Observable[UserFeedMessage]

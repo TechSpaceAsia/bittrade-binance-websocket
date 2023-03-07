@@ -6,7 +6,7 @@ from reactivex.disposable import Disposable
 from logging import getLogger
 from bittrade_binance_websocket import models
 
-MARKET_URL = getenv("HUOBI_HTTP_MARKET_URL", "https://api.huobi.pro")
+MARKET_URL = getenv("BINANCE_HTTP_MARKET_URL", "https://api.binance.com")
 
 session = requests.Session()
 
@@ -36,12 +36,19 @@ def send_request(request: requests.models.Request) -> reactivex.Observable:
     ) -> reactivex.abc.DisposableBase:
         response = session.send(request.prepare())
         if response.ok:
-            body = response.json()
-            if body["status"] == "ok":
+            try:
+                body = response.json()
                 observer.on_next(body)
                 observer.on_completed()
-            else:
-                observer.on_error(body)
+            except Exception as exc:
+                logger.error(
+                    "Error parsing request %s; request was %s",
+                    response.text,
+                    response.request.body
+                    if request.method == "POST"
+                    else response.request.headers,
+                )
+                observer.on_error(exc)
         else:
             try:
                 logger.error(

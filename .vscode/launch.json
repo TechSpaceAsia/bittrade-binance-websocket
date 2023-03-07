@@ -5,24 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Orderbook",
+            "name": "Get time HTTP",
             "type": "python",
             "request": "launch",
-            "module": "examples.orderbook",
-            "justMyCode": true,
-            "env": {
-                "CONFIG_PATH": "./config_local"
-            }
-        },
-        {
-            "name": "Orderbook HTTP",
-            "type": "python",
-            "request": "launch",
-            "module": "examples.orderbook_http",
-            "justMyCode": true,
-            "env": {
-                "CONFIG_PATH": "./config_local"
-            }
+            "module": "examples.get_time",
+            "justMyCode": true
         },
         {
             "name": "Orders Websocket",
@@ -30,55 +17,6 @@
             "request": "launch",
             "module": "examples.orders",
             "justMyCode": true,
-            "env": {
-                "CONFIG_PATH": "./config_local"
-            }
-        },
-        {
-            "name": "Accounts",
-            "type": "python",
-            "request": "launch",
-            "module": "examples.accounts",
-            "justMyCode": true,
-            "env": {
-                "CONFIG_PATH": "./config_local"
-            }
-        },
-        {
-            "name": "Create and cancel",
-            "type": "python",
-            "request": "launch",
-            "module": "examples.create_order",
-            "justMyCode": true,
-            "env": {
-                "CONFIG_PATH": "./config_local"
-            }
-        },
-        {
-            "name": "CLI",
-            "type": "python",
-            "request": "launch",
-            "module": "examples.cli",
-            "justMyCode": false,
-            "args": [],
-            "env": {
-                "CONFIG_PATH": "./config_local/louis_eth_experiments",
-                "LOG_LEVEL": "DEBUG"
-            }
-        },
-        {
-            "name": "Grid",
-            "type": "python",
-            "request": "launch",
-            "module": "scripts.grid",
-            "justMyCode": false,
-            "args": [
-                "--pair=USDT/USD",
-                "--amount-per-order=100",
-                "--grid-gap=0.00002",
-                "--orders-count=5",
-                "--decimal-places=1"
-            ],
             "env": {
                 "CONFIG_PATH": "./config_local"
             }
