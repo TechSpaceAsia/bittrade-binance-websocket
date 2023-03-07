@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Literal, NamedTuple, Optional
 
-from ccxt import huobi
+from ccxt import binance
 from elm_framework_helpers.ccxt.models.orderbook import Orderbook
 from reactivex import Observable
 from reactivex.observable import ConnectableObservable
@@ -44,7 +44,7 @@ class FrameworkContext:
     get_book_http: Callable[
         [market_depth.MarketDepthParams], Observable[market_depth.MarketDepthResponse]
     ]
-    exchange: huobi
+    exchange: binance
     open_orders: Observable[dict]
     public_socket_connection: ConnectableObservable[models.WebsocketBundle]
     private_socket_connection: ConnectableObservable[models.WebsocketBundle]

@@ -1,4 +1,4 @@
-# Crypto.com Websocket
+# Binance Websocket
 
 [NOT RELEASED] This is very much a work in progress, despite being on pypi.
 Most things might be wrongly documented; API **will** change
@@ -14,7 +14,7 @@ Most things might be wrongly documented; API **will** change
 
 ## Installing
 
-`pip install bittrade-cryptodotcom-websocket` or `poetry add bittrade-cryptodotcom-websocket`
+`pip install bittrade-binance-websocket` or `poetry add bittrade-binance-websocket`
 
 ## General considerations
 
@@ -91,7 +91,7 @@ Similar to [bittrade-kraken-rest](https://github.com/TechSpaceAsia/bittrade-krak
 
 This means that you'll need to implement the signature token yourself. The library never has access to your API secret.
 
-See `examples/private_subscription.py` for an example of implementation but it is generally as simple as:
+See `examples/sign.py` for an example of implementation but it is generally as simple as:
 
 ```python
 authenticated_sockets = connection.pipe(
