@@ -9,12 +9,12 @@ from elm_framework_helpers.websockets.models import WebsocketBundle
 from bittrade_binance_websocket.connection.generic import raw_websocket_connection
 from bittrade_binance_websocket.connection.reconnect import retry_with_backoff
 
-MARKET_DATA_URL = os.getenv('HUOBI_MARKET_DATA_WEBSOCKET', 'wss://api.huobi.pro/ws')
+URL = os.getenv('BINANCE_STREAM_WEBSOCKET', 'wss://stream.binance.com:443/ws/stream')
 
 def public_websocket_connection(
     *, reconnect: bool = True, scheduler: Optional[SchedulerBase] = None
 ) -> ConnectableObservable[WebsocketBundle]:
-    connection = raw_websocket_connection(MARKET_DATA_URL, scheduler=scheduler)
+    connection = raw_websocket_connection(URL, scheduler=scheduler)
     if reconnect:
         connection = connection.pipe(retry_with_backoff())
     return connection.pipe(publish())

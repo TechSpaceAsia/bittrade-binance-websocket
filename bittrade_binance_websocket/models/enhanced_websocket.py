@@ -9,4 +9,8 @@ class EnhancedWebsocket(models.EnhancedWebsocket):
 
     def prepare_request(self, message: Any) -> tuple[str, bytes]:
         self._id += 1
+        # for binance, market stream and websocket api needs to have id
+        if type(message) is dict:
+            message['id'] = self._id
+
         return f"id{self._id}", orjson.dumps(message)

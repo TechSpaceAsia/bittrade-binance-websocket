@@ -5,8 +5,10 @@ from bittrade_binance_websocket.models import UserFeedMessage, ResponseMessage
 
 
 def _is_channel_message(channel: str):
+    # channel is both symbol + event/channel type
+    symbol = channel.split('@')[0]
     def channel_message_filter(x: UserFeedMessage):
-        return x.get("action", "") == "push" and x.get("ch", "") == channel
+        return x.get("s", "") == symbol.upper()
 
     return channel_message_filter
 
