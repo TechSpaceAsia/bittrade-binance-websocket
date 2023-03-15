@@ -45,3 +45,5 @@ config_local/
 
 scripts/
 raw_socket.jsonl
+.envrc
+

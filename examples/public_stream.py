@@ -3,8 +3,9 @@ import time
 from rich.logging import RichHandler
 from elm_framework_helpers.websockets.operators import connection_operators
 from elm_framework_helpers.output import debug_observer, debug_operator, info_observer
+from ccxt import binance
 from reactivex import operators
-from bittrade_binance_websocket.channels.depth import subscribe_depth
+from bittrade_binance_websocket.channels.depth import parse_order_book_ccxt, subscribe_depth
 
 from bittrade_binance_websocket.connection.public_stream import public_websocket_connection
 from bittrade_binance_websocket.messages.listen import filter_new_socket_only
@@ -23,7 +24,7 @@ messages = socket_connection.pipe(
     connection_operators.keep_messages_only(),
     operators.share()  # Usually best to share messages to avoid overhead
 )
-messages.subscribe(info_observer('ALL MESSAGES', 'bittrade_binance_websocket'))
+# messages.subscribe(info_observer('ALL MESSAGES', 'bittrade_binance_websocket'))
 # Subscribe to multiple channels only when socket connects
 ready = socket_connection.pipe(
     filter_new_socket_only(),
@@ -31,7 +32,8 @@ ready = socket_connection.pipe(
 )
 # subscribe_to_channel gives an observable with only the messages from that channel
 ready.pipe(
-    subscribe_depth(messages, 'bnbbtc')
+    subscribe_depth(messages, 'bnbbtc'),
+    operators.map(parse_order_book_ccxt(binance()))
 ).subscribe(
     info_observer('TICKER bnbbtc', 'bittrade_binance_websocket')
 )
