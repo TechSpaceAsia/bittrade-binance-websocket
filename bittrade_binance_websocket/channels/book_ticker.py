@@ -1,3 +1,4 @@
+# @bookTicker
 from typing import Any, Callable, Dict, List, cast
 from reactivex import Observable, compose, operators
 from ccxt import binance
@@ -7,6 +8,7 @@ from bittrade_binance_websocket.models import response_message
 from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsocket
 from bittrade_binance_websocket.models.message import UserFeedMessage
 
+# TODO://
 def extract_data():
     def _extract(message: UserFeedMessage):
       return message
@@ -14,27 +16,25 @@ def extract_data():
     return _extract
 
 # TODO: investigate which is the right method to parse to ccxt
-def parse_order_book_ccxt(exchange: binance):
-   def _parse_order_book_ccxt(messages: UserFeedMessage):
-      timestamp = messages.get('E', '')
+def parse_book_ticker_ccxt(exchange: binance):
+   def _parse_book_ticker_ccxt(messages: UserFeedMessage):
       symbol = messages.get('s', '')
+      market = exchange.market(symbol)
       # not really the same
-      return exchange.parse_order_book(messages, symbol, timestamp, bidsKey='b', asksKey='a')
+      return exchange.parse_ticker(messages, market)
    
-   return _parse_order_book_ccxt
+   return _parse_book_ticker_ccxt
 
-def subscribe_depth(
+def subscribe_book_ticker(
     messages: Observable[Dict | List],
-    symbol: str,
-    depth_level: int = 5,
-    update_speed: int = 100
+    symbol: str
 ) -> Callable[[Observable[EnhancedWebsocket]], Observable[UserFeedMessage]]:
     """Unparsed orders (only extracted result array)"""
-    ticker = f'{symbol}@depth'
+    ticker = f'{symbol}@bookTicker'
     return compose(
         subscribe_to_channel(messages, ticker),
         operators.map(extract_data()),
     )
 
 
-__all__ = ["subscribe_depth", "parse_order_book_ccxt"]
+__all__ = ["subscribe_book_ticker", "parse_book_ticker_ccxt"]
