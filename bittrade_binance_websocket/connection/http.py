@@ -33,8 +33,8 @@ def prepare_request(message: models.RequestMessage) -> requests.models.Request:
     if message.params:
         if http_method == "GET":
             kwargs["params"] = message.params
-        if http_method == "POST":
-            kwargs["json"] = message.params
+        else:
+            kwargs["data"] = message.params
 
     # There are (few) cases where the endpoint must be a string; "handle" that below
     try:
