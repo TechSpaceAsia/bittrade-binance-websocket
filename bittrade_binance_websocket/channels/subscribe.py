@@ -29,7 +29,6 @@ def channel_subscription(
 ) -> Observable[UserFeedMessage]:
     def subscribe(observer: ObserverBase, scheduler: Optional[SchedulerBase] = None):
         subscription_message, unsubscription_message = make_sub_unsub_messages(channel)
-
         socket.send_message(subscription_message)
 
         def on_exit():
@@ -59,9 +58,11 @@ def subscribe_to_channel(
         return messages.pipe(
             keep_channel_messages(channel),
             channel_subscription(socket, channel, unsubscribe_on_dispose),
+            # operators.map(_log),
         )
 
     return compose(
         operators.map(socket_to_channel_messages),
         operators.switch_latest(),
+        operators.share(),
     )

@@ -51,6 +51,7 @@ def raw_websocket_connection(
                 pass_message = orjson.loads(message)
                 category = WEBSOCKET_MESSAGE
                 raw_logger.debug(message)
+                # dont think is related
                 action = pass_message.get("action")
                 if action == "ping":
                     category = WEBSOCKET_HEARTBEAT

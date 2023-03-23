@@ -11,15 +11,14 @@ from bittrade_binance_websocket.connection.generic import raw_websocket_connecti
 
 logger = getLogger(__name__)
 
-WEBSOCKET_URL = os.getenv('BINANCE_WEBSOCKET_API', 'wss://ws-api.binance.com:443/ws-api/v3')
+USER_URL = os.getenv('BINANCE_USER_WEBSOCKET', 'wss://stream.binance.com:9443/ws')
 
 
-def private_websocket_connection(
-    *, reconnect: bool = True, scheduler: Optional[SchedulerBase] = None
+def private_websocket_user_stream(
+    *, listen_key: str, reconnect: bool = True, scheduler: Optional[SchedulerBase] = None,
 ) -> ConnectableObservable[Any]:
-    """You need to add your token to the EnhancedWebsocket
-    An example implementation can be found in `examples/private_subscription.py`"""
-    connection = raw_websocket_connection(url=WEBSOCKET_URL, scheduler=scheduler)
+    url = f'{USER_URL}/{listen_key}'
+    connection = raw_websocket_connection(url=url, scheduler=scheduler)
     if reconnect:
         connection = connection.pipe(retry_with_backoff())
 
@@ -27,5 +26,5 @@ def private_websocket_connection(
 
 
 __all__ = [
-    "private_websocket_connection",
+    "private_websocket_user_stream",
 ]

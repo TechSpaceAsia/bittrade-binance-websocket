@@ -1,4 +1,5 @@
 from os import getenv
+import os
 from typing import Literal
 import requests
 import reactivex
@@ -13,13 +14,27 @@ session = requests.Session()
 logger = getLogger(__name__)
 
 
+def generate_add_api_key(api_key: str = ''):
+    key = os.getenv('BINANCE_API_KEY', api_key)
+
+    def _add_api_key(request: requests.models.Request):
+        request.headers.update({
+            'X-MBX-APIKEY': key
+        })
+        logger.info(request.headers)
+        return request
+
+    return _add_api_key
+
 def prepare_request(message: models.RequestMessage) -> requests.models.Request:
     http_method = message.method
     kwargs = {}
-    if http_method == "GET":
-        kwargs["params"] = message.params
-    if http_method == "POST":
-        kwargs["json"] = message.params
+    # check if message params are set, if not, ignores
+    if message.params:
+        if http_method == "GET":
+            kwargs["params"] = message.params
+        else:
+            kwargs["data"] = message.params
 
     # There are (few) cases where the endpoint must be a string; "handle" that below
     try:
