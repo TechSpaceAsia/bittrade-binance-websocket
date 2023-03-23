@@ -31,5 +31,6 @@ def test_generate_signature(request_params):
     sorted = to_sorted_qs(request_params)
     qs = encode_query_string(sorted)
 
-    hash_signed = get_signature(qs, 'NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j')
+    sign = get_signature('NhqPtmdSJYdKjVHjA7PZj4Mge3R5YNiP1e3UZjInClVN65XAbvqqM6A7H5fATj0j')
+    hash_signed = sign(qs)
     assert hash_signed == 'cc15477742bd704c29492d96c7ead9414dfd8e0ec4a00f947bb5bb454ddbd08a'

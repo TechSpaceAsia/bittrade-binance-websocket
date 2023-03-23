@@ -13,12 +13,10 @@ def extract_data():
 
     return _extract
 
-# TODO: investigate which is the right method to parse to ccxt
 def parse_order_book_ccxt(exchange: binance):
    def _parse_order_book_ccxt(messages: UserFeedMessage):
       timestamp = messages.get('E', '')
       symbol = messages.get('s', '')
-      # not really the same
       return exchange.parse_order_book(messages, symbol, timestamp, bidsKey='b', asksKey='a')
    
    return _parse_order_book_ccxt

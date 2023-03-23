@@ -11,7 +11,7 @@ from bittrade_binance_websocket.connection.generic import raw_websocket_connecti
 
 logger = getLogger(__name__)
 
-USER_URL = os.getenv('HUOBI_USER_WEBSOCKET', 'wss://api.huobi.pro/ws/v2')
+WEBSOCKET_URL = os.getenv('BINANCE_WEBSOCKET_API', 'wss://ws-api.binance.com:443/ws-api/v3')
 
 
 def private_websocket_connection(
@@ -19,7 +19,7 @@ def private_websocket_connection(
 ) -> ConnectableObservable[Any]:
     """You need to add your token to the EnhancedWebsocket
     An example implementation can be found in `examples/private_subscription.py`"""
-    connection = raw_websocket_connection(url=USER_URL, scheduler=scheduler)
+    connection = raw_websocket_connection(url=WEBSOCKET_URL, scheduler=scheduler)
     if reconnect:
         connection = connection.pipe(retry_with_backoff())
 
