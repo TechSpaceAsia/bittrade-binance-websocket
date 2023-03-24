@@ -5,7 +5,7 @@ from logging import getLogger
 from typing import Callable, Optional, cast, TYPE_CHECKING
 
 import requests
-from ccxt import huobi
+from ccxt import binance
 from reactivex import Observable, operators
 from reactivex.disposable import CompositeDisposable
 from reactivex.operators import flat_map, share
@@ -42,11 +42,10 @@ def get_framework(
         ],
     ],
     add_token_http: Callable[[requests.models.Request], requests.models.Request],
-    books: Optional[tuple[Any]] = None,
     load_markets=True,
 ) -> FrameworkContext:
     # books = books or cast(tuple[BookConfig], ())
-    exchange = huobi()
+    exchange = binance()
     if load_markets:
         exchange.load_markets()
     pool_scheduler = ThreadPoolScheduler(200)

@@ -30,14 +30,7 @@ class BookConfig(NamedTuple):
 class FrameworkContext:
     all_subscriptions: CompositeDisposable
     authenticated_sockets: Observable[models.EnhancedWebsocket]
-    books: dict[str, Observable[Orderbook]]
     exchange: binance
-    public_socket_connection: ConnectableObservable[models.WebsocketBundle]
     private_socket_connection: ConnectableObservable[models.WebsocketBundle]
-    private_messages: Observable[UserFeedMessage]
+    user_feed_messages: Observable[UserFeedMessage]
     scheduler: ThreadPoolScheduler
-    websocket_bs: models.EnhancedWebsocketBehaviorSubject
-    open_orders_http: Callable[
-        [get_all_open_orders.AllOpenOrdersParams],
-        Observable[get_all_open_orders.AllOpenOrdersResponse],
-    ]
