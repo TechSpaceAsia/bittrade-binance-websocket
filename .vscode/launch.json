@@ -30,6 +30,16 @@
             "env": {
                 "CONFIG_PATH": "./config_local"
             }
+        },
+        {
+            "name": "Examples | User stream",
+            "type": "python",
+            "request": "launch",
+            "module": "examples.user_stream",
+            "justMyCode": true,
+            "env": {
+                "CONFIG_PATH": "./config_local"
+            }
         }
     ]
 }

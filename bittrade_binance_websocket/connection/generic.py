@@ -7,12 +7,19 @@ from reactivex import Observable
 from reactivex.abc import SchedulerBase, ObserverBase
 from reactivex.scheduler import ThreadPoolScheduler
 from websocket import WebSocketConnectionClosedException, WebSocketApp
-from elm_framework_helpers.websockets.models import WebsocketBundle, WEBSOCKET_MESSAGE, WEBSOCKET_HEARTBEAT, WEBSOCKET_STATUS, WEBSOCKET_OPENED, WEBSOCKET_CLOSED
+from elm_framework_helpers.websockets.models import (
+    WebsocketBundle,
+    WEBSOCKET_MESSAGE,
+    WEBSOCKET_HEARTBEAT,
+    WEBSOCKET_STATUS,
+    WEBSOCKET_OPENED,
+    WEBSOCKET_CLOSED,
+)
 
 from bittrade_binance_websocket.models import EnhancedWebsocket
 
 logger = getLogger(__name__)
-raw_logger = getLogger("bittrade_huobi_websocket.raw_socket.received")
+raw_logger = getLogger("bittrade_binance_websocket.raw_socket.received")
 
 
 def raw_websocket_connection(
@@ -57,12 +64,7 @@ def raw_websocket_connection(
                     category = WEBSOCKET_HEARTBEAT
                     # We need to respond or we'll lose connection
                     enhanced.send_json(
-                        {
-                            "action": "pong",
-                            "data": {
-                                "ts": pass_message["data"]["ts"]
-                            }
-                        }
+                        {"action": "pong", "data": {"ts": pass_message["data"]["ts"]}}
                     )
                 else:
                     logger.debug("[SOCKET][RAW] %s", message)

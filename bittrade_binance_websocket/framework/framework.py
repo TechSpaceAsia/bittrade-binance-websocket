@@ -13,79 +13,73 @@ from reactivex.scheduler import ThreadPoolScheduler
 from reactivex.subject import BehaviorSubject
 from bittrade_binance_websocket import models
 from elm_framework_helpers.websockets.operators import connection_operators
-from bittrade_binance_websocket.connection import (
-    private_websocket_connection,
-    public_websocket_connection,
+from bittrade_binance_websocket.connection.private_user_stream import (
+    private_websocket_user_stream,
 )
-from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
-from bittrade_binance_websocket.rest.create_order import create_order_http_factory
-from bittrade_binance_websocket.rest.get_book import get_book_http
-from bittrade_binance_websocket.rest.cancel_orders_batch import (
-    cancel_orders_batch_http_factory,
-)
-from bittrade_binance_websocket.rest.get_all_open_orders import (
-    get_all_open_orders_http_factory,
-)
-from bittrade_binance_websocket.channels.open_orders import subscribe_open_orders
 from bittrade_binance_websocket.models.framework import FrameworkContext
 from elm_framework_helpers.output import debug_operator
+
+from bittrade_binance_websocket.rest.listen_key import (
+    get_active_listen_key_http_factory,
+    get_listen_key_http_factory,
+    ping_listen_key_http_factory,
+    delete_listen_key_http_factory,
+)
 
 
 logger = getLogger(__name__)
 
 
 def get_framework(
+    *,
     add_token: Callable[
         [Observable[models.ResponseMessage]],
         Callable[
             [Observable[models.EnhancedWebsocket]], Observable[models.ResponseMessage]
         ],
-    ],
-    add_token_http: Callable[[requests.models.Request], requests.models.Request],
+    ] = None,
+    user_stream_signer_http: Callable[
+        [requests.models.Request], requests.models.Request
+    ] = None,
+    user_data_signer_http: Callable[
+        [requests.models.Request], requests.models.Request
+    ] = None,
     load_markets=True,
 ) -> FrameworkContext:
-    # books = books or cast(tuple[BookConfig], ())
     exchange = binance()
     if load_markets:
         exchange.load_markets()
     pool_scheduler = ThreadPoolScheduler(200)
     all_subscriptions = CompositeDisposable()
+    # Rest
+    get_active_listen_key_http = get_active_listen_key_http_factory(
+        user_stream_signer_http
+    )
+    get_listen_key_http = get_listen_key_http_factory(user_stream_signer_http)
+    keep_alive_listen_key_http = ping_listen_key_http_factory(user_stream_signer_http)
+    delete_listen_key_http = delete_listen_key_http_factory(user_stream_signer_http)
+
     # Set up sockets
-    # public_sockets = public_websocket_connection()
-    private_sockets = private_websocket_connection()
-    public_sockets = None
-
-    # public_messages = public_sockets.pipe(connection_operators.keep_messages_only(), share())
-    private_messages = private_sockets.pipe(
-        connection_operators.keep_messages_only(), share()
+    user_data_stream_socket_bundles = private_websocket_user_stream(
+        get_listen_key_http, keep_alive_listen_key_http
+    )
+    user_data_stream_socket = user_data_stream_socket_bundles.pipe(
+        connection_operators.keep_new_socket_only()
     )
 
-    authenticated_sockets = private_sockets.pipe(
-        connection_operators.keep_new_socket_only(),
-        add_token(private_messages),
-        share(),
-    )
-
-    socket_bs = BehaviorSubject(cast(models.EnhancedWebsocket, None))
-    authenticated_sockets.subscribe(socket_bs)
-    guaranteed_socket = socket_bs.pipe(
-        operators.filter(lambda x: bool(x)),
+    user_data_stream_messages = user_data_stream_socket_bundles.pipe(
+        connection_operators.keep_messages_only()
     )
 
     return FrameworkContext(
         all_subscriptions=all_subscriptions,
-        authenticated_sockets=authenticated_sockets,
-        books={},
-        cancel_all_http=cancel_orders_batch_http_factory(add_token_http),
-        cancel_order_http=cancel_order_http_factory(add_token_http),
-        create_order_http=create_order_http_factory(add_token_http),
-        get_book_http=get_book_http,
         exchange=exchange,
-        open_orders=authenticated_sockets.pipe(subscribe_open_orders(private_messages)),
-        open_orders_http=get_all_open_orders_http_factory(add_token_http),
-        public_socket_connection=public_sockets,
-        private_socket_connection=private_sockets,
-        private_messages=private_messages,
+        delete_listen_key_http=delete_listen_key_http,
+        get_active_listen_key_http=get_active_listen_key_http,
+        get_listen_key_http=get_listen_key_http,
+        keep_alive_listen_key_http=keep_alive_listen_key_http,
+        user_data_stream_messages=user_data_stream_messages,
+        user_data_stream_sockets=user_data_stream_socket,
+        user_data_stream_socket_bundles=user_data_stream_socket_bundles,
         scheduler=pool_scheduler,
-        websocket_bs=socket_bs,
     )

@@ -643,14 +643,14 @@ files = [
 
 [[package]]
 name = "elm-framework-helpers"
-version = "0.2.4"
+version = "0.2.7"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "elm_framework_helpers-0.2.4-py3-none-any.whl", hash = "sha256:870585147c6adb8afcdf97a86e7f13371867a1f25b3a4b49d408e3a03b2266c9"},
-    {file = "elm_framework_helpers-0.2.4.tar.gz", hash = "sha256:22909ed79eed61fa4ca8bd590586588f4477dfc4e92c46d6adba1bf6779ae272"},
+    {file = "elm_framework_helpers-0.2.7-py3-none-any.whl", hash = "sha256:2753c0f2c247cc06e7be5a999cfbd6ccb288b5404116e6611a80f7c9bcb3b302"},
+    {file = "elm_framework_helpers-0.2.7.tar.gz", hash = "sha256:d49e22830b562ee12155a268cd081d334e4533cdf0c58b35a2c6a500dac67599"},
 ]
 
 [package.dependencies]
@@ -2034,4 +2034,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5c681bce4f32e51d8835dab9f8551729771f4162191b63ff0607edf9c61e7e7c"
+content-hash = "18878799ad6a7f168dbc53e58f448e24acff065fbd790f2e4cb4d81362b8320e"
