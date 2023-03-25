@@ -19,14 +19,16 @@ from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsock
 from bittrade_binance_websocket.models.message import UserFeedMessage
 from bittrade_binance_websocket.models.order import (
     OrderCancelRequest,
-    PlaceOrderRequest,
-    PlaceOrderResponse,
+    SymbolOrdersCancelRequest,
 )
 from reactivex.disposable import CompositeDisposable
 from reactivex.subject import BehaviorSubject
 from bittrade_binance_websocket.models.private import PrivateRequest
 
-from bittrade_binance_websocket.models.response_message import ResponseMessage
+from bittrade_binance_websocket.models.response_message import (
+    ResponseMessage,
+    SpotResponseMessage,
+)
 
 logger = getLogger(__name__)
 
@@ -47,6 +49,37 @@ def cancel_order_factory(
             request_id, obs = current_socket.request_to_observable(
                 {
                     "method": "order.cancel",
+                    "params": dataclasses.asdict(request),
+                }
+            )
+            sub.add(
+                messages.pipe(
+                    wait_for_response(request_id, 5.0),
+                    response_ok(),
+                ).subscribe(observer, scheduler=scheduler)
+            )
+            sub.add(obs.subscribe())  # equivalent to sending the request
+            return sub
+
+        return Observable(subscribe)
+
+    return cancel_order
+
+
+def cancel_symbol_orders_factory(
+    socket: BehaviorSubject[EnhancedWebsocket],
+    messages: Observable[SpotResponseMessage],
+) -> Callable[[SymbolOrdersCancelRequest], Observable[SpotResponseMessage]]:
+    def cancel_order(
+        request: SymbolOrdersCancelRequest,
+    ) -> Observable[SpotResponseMessage]:
+        def subscribe(observer, scheduler):
+            sub = CompositeDisposable()
+            current_socket = socket.value
+            # the helper method will return the request_id but is typed as an int, though here it's a string
+            request_id, obs = current_socket.request_to_observable(
+                {
+                    "method": "openOrders.cancelAll",
                     "params": dataclasses.asdict(request),
                 }
             )

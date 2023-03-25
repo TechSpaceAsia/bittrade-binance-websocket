@@ -88,6 +88,12 @@ class OrderCancelRequest:
     recvWindow: Optional[int] = None
 
 
+@dataclasses.dataclass
+class SymbolOrdersCancelRequest:
+    symbol: str
+    recvWindow: Optional[int] = None
+
+
 class UserDataStreamOrder(TypedDict):
     E: int  # Event time
     s: str  # Symbol

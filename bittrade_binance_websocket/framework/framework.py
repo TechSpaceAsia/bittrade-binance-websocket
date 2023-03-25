@@ -17,7 +17,10 @@ from bittrade_binance_websocket.connection.private_user_stream import (
     private_websocket_user_stream,
 )
 from bittrade_binance_websocket.events.add_order import create_order_factory
-from bittrade_binance_websocket.events.cancel_order import cancel_order_factory
+from bittrade_binance_websocket.events.cancel_order import (
+    cancel_order_factory,
+    cancel_symbol_orders_factory,
+)
 from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsocket
 from bittrade_binance_websocket.models.framework import FrameworkContext
 from bittrade_binance_websocket.models.order import (
@@ -102,6 +105,9 @@ def get_framework(
     spot_order_cancel = cancel_order_factory(
         spot_trade_guaranteed_sockets, spot_trade_socket_messages
     )
+    spot_symbol_orders_cancel = cancel_symbol_orders_factory(
+        spot_trade_guaranteed_sockets, spot_trade_socket_messages
+    )
 
     return FrameworkContext(
         all_subscriptions=all_subscriptions,
@@ -116,6 +122,7 @@ def get_framework(
         spot_trade_guaranteed_sockets=spot_trade_guaranteed_sockets,
         spot_order_create=spot_order_create,
         spot_order_cancel=spot_order_cancel,
+        spot_symbol_orders_cancel=spot_symbol_orders_cancel,
         user_data_stream_messages=user_data_stream_messages,
         user_data_stream_sockets=user_data_stream_socket,
         user_data_stream_socket_bundles=user_data_stream_socket_bundles,

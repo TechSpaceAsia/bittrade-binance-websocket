@@ -2,6 +2,7 @@ import logging
 import os
 import time
 from typing import Callable, Dict, Tuple, cast
+from uuid import uuid4
 import reactivex
 from rich.logging import RichHandler
 from elm_framework_helpers.websockets.operators import connection_operators
@@ -64,6 +65,7 @@ order_request = PlaceOrderRequest(
     quoteOrderQty=None,
     stopPrice=None,
     trailingDelta=None,
+    newClientOrderId=str(uuid4()),
 )
 
 ready = framework.spot_trade_guaranteed_sockets.pipe(
