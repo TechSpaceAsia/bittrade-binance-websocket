@@ -1,5 +1,5 @@
 from logging import getLogger
-from typing import Any, Tuple, Dict, Literal, Union, List, Optional
+from typing import Any, Tuple, Dict, Literal, Union, List, Optional, TYPE_CHECKING
 
 import orjson
 import reactivex.disposable
@@ -16,7 +16,9 @@ from elm_framework_helpers.websockets.models import (
     WEBSOCKET_CLOSED,
 )
 
-from bittrade_binance_websocket.models import EnhancedWebsocket
+if TYPE_CHECKING:
+    from bittrade_binance_websocket.models import EnhancedWebsocket
+
 
 logger = getLogger(__name__)
 raw_logger = getLogger("bittrade_binance_websocket.raw_socket.received")

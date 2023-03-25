@@ -1,12 +1,14 @@
 from ast import Attribute
 from os import getenv
 import os
-from typing import Literal
+from typing import Literal, TYPE_CHECKING
 import requests
 import reactivex
 from reactivex.disposable import Disposable
 from logging import getLogger
-from bittrade_binance_websocket import models
+
+if TYPE_CHECKING:
+    from bittrade_binance_websocket.models import RequestMessage, ResponseMessage
 
 MARKET_URL = getenv("BINANCE_HTTP_MARKET_URL", "https://api.binance.com")
 
@@ -24,7 +26,7 @@ def generate_add_api_key(key: str):
     return _add_api_key
 
 
-def prepare_request(message: models.RequestMessage) -> requests.models.Request:
+def prepare_request(message: "RequestMessage") -> requests.models.Request:
     http_method = message.method
     kwargs = {}
     # check if message params are set, if not, ignores

@@ -26,10 +26,16 @@ def to_sorted_qs(values: Union[Dict[str, Any], Any]) -> Tuple[Tuple[str, Any]]:
             value = cast(Enum, value).value
 
         # remove None
-        if value:
-            sorted_tuple = sorted_tuple + ((key, value,),)
-    
+        if value is not None:
+            sorted_tuple = sorted_tuple + (
+                (
+                    key,
+                    value,
+                ),
+            )
+
     return sorted_tuple
+
 
 def encode_query_string(params: Tuple):
     """
@@ -44,6 +50,7 @@ def encode_query_string(params: Tuple):
     encoded = urlencode(params)
     return encoded
 
+
 @curry_flip(1)
 def get_signature(qs: str, secret: str):
     """
@@ -56,5 +63,5 @@ def get_signature(qs: str, secret: str):
     Returns:
     - The SHA-256 HMAC signature of the given query string using the provided secret key.
     """
-    signed = hmac.new(secret.encode('utf-8'), qs.encode('utf-8'), hashlib.sha256)
+    signed = hmac.new(secret.encode("utf-8"), qs.encode("utf-8"), hashlib.sha256)
     return signed.hexdigest()

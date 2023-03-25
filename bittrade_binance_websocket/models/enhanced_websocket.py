@@ -1,6 +1,14 @@
-from typing import Any
+from datetime import datetime
+from typing import Any, Callable
+from uuid import uuid4
 from elm_framework_helpers.websockets import models
 import orjson
+from bittrade_binance_websocket.connection.sign import (
+    encode_query_string,
+    get_signature,
+    to_sorted_qs,
+)
+from expression.core import pipe
 
 
 def del_none(d):
@@ -18,20 +26,28 @@ def del_none(d):
             del_none(value)
     return d
 
+
 class EnhancedWebsocket(models.EnhancedWebsocket):
-    secret: str
     key: str
+    secret: str
+
+    def get_timestamp(self) -> str:
+        return str(int(datetime.now().timestamp() * 1e3))
 
     def send_message(self, message: Any) -> int | str:
         return self.send_json(message)
 
-    def prepare_request(self, message: Any) -> tuple[str, bytes]:
-        self._id += 1
-        # for binance, market stream and websocket api needs to have id
-        if type(message) is dict and not message['id']:
-            message['id'] = self._id
-
-        if getattr(message, 'copy', None):
-            message = del_none(message.copy())
-
-        return f"id{self._id}", orjson.dumps(message)
+    def prepare_request(self, message: dict, sign: bool = False) -> tuple[str, bytes]:
+        signer, get_timestamp = get_signature(self.secret), self.get_timestamp
+        id = message.get("id", str(uuid4()))
+        message["id"] = id
+        params = pipe(
+            message.get("params", {}),
+            del_none,
+            lambda x: {**x, "apiKey": self.key, "timestamp": get_timestamp()},
+            lambda x: x
+            if not sign
+            else {**x, "signature": pipe(x, to_sorted_qs, encode_query_string, signer)},
+        )
+        message["params"] = params
+        return message["id"], orjson.dumps(message)
