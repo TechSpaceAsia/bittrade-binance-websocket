@@ -2,8 +2,12 @@ from typing import Callable, List, Optional, Tuple, cast
 
 from reactivex import compose, operators, Observable
 
-from ..models import EnhancedWebsocket, WebsocketBundle, WebsocketStatusBundle
-from ..models.message_types import WEBSOCKET_STATUS
+from bittrade_binance_websocket.models import EnhancedWebsocket
+from elm_framework_helpers.websockets.models import (
+    WebsocketBundle,
+    WebsocketStatusBundle,
+    WEBSOCKET_STATUS,
+)
 
 
 ReadyMessage = Tuple[EnhancedWebsocket, bool]

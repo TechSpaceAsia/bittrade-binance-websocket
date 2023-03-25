@@ -1,45 +1,17 @@
-from typing import Callable, cast
-from reactivex import Observable, compose, operators
-from reactivex.operators import flat_map, with_latest_from
-from bittrade_binance_websocket.models import (
-    EnhancedWebsocket,
-    UserFeedMessage,
-    ResponseMessage,
+from reactivex import compose, operators
+
+from elm_framework_helpers.websockets.operators.connection_operators import (
+    keep_messages_only,
 )
 
-from bittrade_binance_websocket.operators.stream.response_messages import extract_data
-from bittrade_binance_websocket.models import OrderDict
 
-from bittrade_binance_websocket.channels.subscribe import subscribe_to_channel
-from ccxt import huobi
-
-OpenOrdersData = list[OrderDict]
+def is_open_order_message(x: dict) -> bool:
+    return x.get("e", "") == "executionReport"
 
 
-def _subscribe_open_orders(
-    messages: Observable[ResponseMessage],
-    instrument: str = "",
-):
-    channel = f"orders#{instrument}"
-    return subscribe_to_channel(messages, channel)
+def keep_open_orders_messages():
+    """Use with a WebsocketBundle feed"""
+    return compose(keep_messages_only(), operators.map(is_open_order_message))
 
 
-def to_ccxt_entries(exchange: huobi):
-    def to_open_orders_entries_(message: ResponseMessage):
-        return cast(list[dict], exchange.parse_orders(message))
-
-    return to_open_orders_entries_
-
-
-def subscribe_open_orders(
-    all_messages: Observable[ResponseMessage],
-    symbol: str,
-) -> Callable[[Observable[EnhancedWebsocket]], Observable[UserFeedMessage]]:
-    """Unparsed orders (only extracted result array)"""
-    return compose(
-        _subscribe_open_orders(all_messages, symbol),
-        extract_data(),  # type: ignore
-    )
-
-
-__all__ = ["subscribe_open_orders"]
+__all__ = ["keep_open_orders_messages"]

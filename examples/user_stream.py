@@ -23,5 +23,8 @@ context.user_data_stream_socket_bundles.connect()
 
 time.sleep(5)
 
-key = "Ff7FgIP0zbKuJE5s0rkqfzxIJou2o3WJAMii6Kwk93U9bY0M79BrODX8HFAH"
-context.delete_listen_key_http(key).subscribe(print, print, print)
+# Uncomment to see the reconnect behavior, key can be read from logs when initially connecting
+# key = ""
+# context.delete_listen_key_http(key).subscribe(print, print, print)
+
+time.sleep(60)

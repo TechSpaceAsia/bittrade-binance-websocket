@@ -36,7 +36,7 @@
             "type": "python",
             "request": "launch",
             "module": "examples.user_stream",
-            "justMyCode": true,
+            "justMyCode": false,
             "env": {
                 "CONFIG_PATH": "./config_local"
             }

@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, TypedDict
+from typing import Dict, List, Tuple, TypedDict, Literal
 
 
 class PrivateSequence(TypedDict):
@@ -11,3 +11,7 @@ PrivateMessage = PrivateSequence
 PublicMessage = Dict
 
 UserFeedMessage = PrivateMessage | PublicMessage
+
+
+class UserDataStreamMessage(TypedDict):
+    e: Literal["outboundAccountInfo", "executionReport", "outboundAccountPosition"]
