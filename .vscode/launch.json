@@ -40,6 +40,16 @@
             "env": {
                 "CONFIG_PATH": "./config_local"
             }
+        },
+        {
+            "name": "Examples | Create order",
+            "type": "python",
+            "request": "launch",
+            "module": "examples.create_order",
+            "justMyCode": false,
+            "env": {
+                "CONFIG_PATH": "./config_local"
+            }
         }
     ]
 }

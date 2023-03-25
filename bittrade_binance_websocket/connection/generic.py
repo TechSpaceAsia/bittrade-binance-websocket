@@ -16,8 +16,7 @@ from elm_framework_helpers.websockets.models import (
     WEBSOCKET_CLOSED,
 )
 
-if TYPE_CHECKING:
-    from bittrade_binance_websocket.models import EnhancedWebsocket
+from bittrade_binance_websocket.models import EnhancedWebsocket
 
 
 logger = getLogger(__name__)
@@ -60,16 +59,7 @@ def raw_websocket_connection(
                 pass_message = orjson.loads(message)
                 category = WEBSOCKET_MESSAGE
                 raw_logger.debug(message)
-                # dont think is related
-                action = pass_message.get("action")
-                if action == "ping":
-                    category = WEBSOCKET_HEARTBEAT
-                    # We need to respond or we'll lose connection
-                    enhanced.send_json(
-                        {"action": "pong", "data": {"ts": pass_message["data"]["ts"]}}
-                    )
-                else:
-                    logger.debug("[SOCKET][RAW] %s", message)
+                logger.debug("[SOCKET][RAW] %s", message)
 
                 try:
                     observer.on_next((enhanced, category, pass_message))

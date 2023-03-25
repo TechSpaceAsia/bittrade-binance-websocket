@@ -7,6 +7,7 @@ from bittrade_binance_websocket.connection.private_user_stream import (
 from bittrade_binance_websocket.framework import get_framework
 from .sign import add_api_key_factory
 import logging
+from IPython.terminal import embed
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -20,11 +21,11 @@ context.user_data_stream_messages.subscribe(print, print, print)
 context.user_data_stream_sockets.subscribe(print, print, print)
 
 context.user_data_stream_socket_bundles.connect()
-
-time.sleep(5)
+embed.embed()
+# time.sleep(5)
 
 # Uncomment to see the reconnect behavior, key can be read from logs when initially connecting
 # key = ""
 # context.delete_listen_key_http(key).subscribe(print, print, print)
 
-time.sleep(60)
+# time.sleep(60)

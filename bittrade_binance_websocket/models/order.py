@@ -53,12 +53,12 @@ class PlaceOrderRequest:
     side: OrderSide
     type: OrderType
     timeInForce: Optional[OrderTimeInForceType]
-    price: Optional[float]
-    quantity: Optional[float]
-    quoteOrderQty: Optional[float]
-    stopPrice: Optional[float]
+    price: Optional[str]
+    quantity: Optional[str]
+    quoteOrderQty: Optional[str]
+    stopPrice: Optional[str]
     trailingDelta: Optional[int]
-    icebergQty: Optional[float] = None
+    icebergQty: Optional[str] = None
     strategyId: Optional[int] = None
     strategyType: Optional[int] = None
     selfTradePreventionMode: Optional[OrderSelfTradePreventionMode] = None

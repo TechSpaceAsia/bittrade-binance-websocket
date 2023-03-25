@@ -1,12 +1,15 @@
 import dataclasses
 from datetime import datetime
 from logging import getLogger
-import time
+import reactivex
+from reactivex.disposable import CompositeDisposable
+from reactivex.scheduler import NewThreadScheduler
+from reactivex.subject import BehaviorSubject
 from typing import Callable, Dict, cast
 from uuid import uuid4
 from expression import pipe
 from reactivex import Observable, compose, operators
-from bittrade_binance_websocket.connection.sign import (
+from bittrade_binance_websocket.sign import (
     encode_query_string,
     get_signature,
     to_sorted_qs,
@@ -34,10 +37,29 @@ class OrderRequest(PlaceOrderRequest, PrivateRequest):
 
 
 def create_order_factory(
-    socket: Observable[EnhancedWebsocket], messages: Observable[ResponseMessage]
+    socket: BehaviorSubject[EnhancedWebsocket], messages: Observable[ResponseMessage]
 ) -> Callable[[PlaceOrderRequest], Observable[PlaceOrderResponse]]:
     def create_order(request: PlaceOrderRequest) -> Observable[PlaceOrderResponse]:
-        return add_order(messages, request)(socket)
+        def subscribe(observer, scheduler):
+            sub = CompositeDisposable()
+            current_socket = socket.value
+            # the helper method will return the request_id but is typed as an int, though here it's a string
+            request_id, obs = current_socket.request_to_observable(
+                {
+                    "method": "order.place",
+                    "params": dataclasses.asdict(request),
+                }
+            )
+            sub.add(
+                messages.pipe(
+                    wait_for_response(request_id, 5.0),
+                    response_ok(),
+                ).subscribe(observer, scheduler=scheduler)
+            )
+            sub.add(obs.subscribe())  # equivalent to sending the request
+            return sub
+
+        return Observable(subscribe)
 
     return create_order
 

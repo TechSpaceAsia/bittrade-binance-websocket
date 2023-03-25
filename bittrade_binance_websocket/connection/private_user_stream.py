@@ -30,7 +30,7 @@ def private_websocket_user_stream(
         raw_websocket_connection,
         listen_key_getter,
         listen_key_keep_alive,
-        reactivex.interval(10),
+        reactivex.interval(600),
     )
 
 

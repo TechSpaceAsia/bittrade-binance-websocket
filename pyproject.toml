@@ -51,6 +51,7 @@ plugins = "returns.contrib.mypy.returns_plugin"
 
 
 
+
 [tool.poetry.group.rich.dependencies]
 fire = "^0.5.0"
 rich = "^13.3.1"

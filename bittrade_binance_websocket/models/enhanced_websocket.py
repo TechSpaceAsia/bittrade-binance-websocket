@@ -3,7 +3,7 @@ from typing import Any, Callable
 from uuid import uuid4
 from elm_framework_helpers.websockets import models
 import orjson
-from bittrade_binance_websocket.connection.sign import (
+from bittrade_binance_websocket.sign import (
     encode_query_string,
     get_signature,
     to_sorted_qs,
@@ -37,17 +37,19 @@ class EnhancedWebsocket(models.EnhancedWebsocket):
     def send_message(self, message: Any) -> int | str:
         return self.send_json(message)
 
-    def prepare_request(self, message: dict, sign: bool = False) -> tuple[str, bytes]:
+    def prepare_request(self, original_message: dict) -> tuple[str, bytes]:
         signer, get_timestamp = get_signature(self.secret), self.get_timestamp
+        message = original_message.copy()
         id = message.get("id", str(uuid4()))
         message["id"] = id
         params = pipe(
-            message.get("params", {}),
+            message.get("params", {}).copy(),
             del_none,
             lambda x: {**x, "apiKey": self.key, "timestamp": get_timestamp()},
-            lambda x: x
-            if not sign
-            else {**x, "signature": pipe(x, to_sorted_qs, encode_query_string, signer)},
+            lambda x: {
+                **x,
+                "signature": pipe(x, to_sorted_qs, encode_query_string, signer),
+            },
         )
         message["params"] = params
         return message["id"], orjson.dumps(message)

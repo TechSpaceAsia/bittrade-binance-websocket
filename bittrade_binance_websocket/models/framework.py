@@ -8,8 +8,18 @@ from reactivex.observable import ConnectableObservable
 from reactivex.disposable import CompositeDisposable
 from reactivex.scheduler import ThreadPoolScheduler
 from elm_framework_helpers.websockets import models
+from bittrade_binance_websocket.events.cancel_order import CancelOrderRequest
 from bittrade_binance_websocket.models import UserFeedMessage
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
+from bittrade_binance_websocket.models.order import (
+    OrderCancelRequest,
+    OrderResponseType,
+    OrderSide,
+    OrderTimeInForceType,
+    OrderType,
+    PlaceOrderRequest,
+    PlaceOrderResponse,
+)
 
 
 class BookConfig(NamedTuple):
@@ -26,6 +36,12 @@ class FrameworkContext:
     delete_listen_key_http: Callable[[str], Observable[None]]
     keep_alive_listen_key_http: Callable[[str], Observable[None]]
     scheduler: ThreadPoolScheduler
+    spot_trade_socket_bundles: ConnectableObservable[models.WebsocketBundle]
+    spot_trade_socket_messages: Observable[dict]
+    spot_trade_sockets: Observable[models.EnhancedWebsocket]
+    spot_trade_guaranteed_sockets: models.EnhancedWebsocketBehaviorSubject
+    spot_order_create: Callable[[PlaceOrderRequest], Observable[PlaceOrderResponse]]
+    spot_order_cancel: Callable[[OrderCancelRequest], Observable[CancelOrderRequest]]
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]
     user_data_stream_messages: Observable[UserFeedMessage]
