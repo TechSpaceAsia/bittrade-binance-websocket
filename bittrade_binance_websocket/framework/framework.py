@@ -32,6 +32,7 @@ from bittrade_binance_websocket.models.order import (
     PlaceOrderRequest,
     PlaceOrderResponse,
 )
+from bittrade_binance_websocket.rest.symbol_price_ticker import symbol_price_ticker_http
 from bittrade_binance_websocket.rest.listen_key import (
     delete_listen_key_http_factory,
     get_active_listen_key_http_factory,
@@ -116,6 +117,7 @@ def get_framework(
         get_active_listen_key_http=get_active_listen_key_http,
         get_listen_key_http=get_listen_key_http,
         keep_alive_listen_key_http=keep_alive_listen_key_http,
+        market_symbol_price_ticker_http=symbol_price_ticker_http,
         spot_trade_socket_bundles=spot_trade_socket_bundles,
         spot_trade_socket_messages=spot_trade_socket_messages,
         spot_trade_sockets=spot_trade_sockets,
