@@ -45,6 +45,9 @@ class FrameworkContext:
     spot_symbol_orders_cancel: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
     ]
+    spot_symbol_orders_cancel_http: Callable[
+        [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
+    ]
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]
     user_data_stream_messages: Observable[UserFeedMessage]

@@ -3,6 +3,7 @@ import os
 import time
 from typing import Callable, Dict, Tuple, cast
 from uuid import uuid4
+from expression import is_ok
 import reactivex
 from rich.logging import RichHandler
 from elm_framework_helpers.websockets.operators import connection_operators
@@ -26,9 +27,15 @@ from bittrade_binance_websocket.models.order import (
     OrderType,
     PlaceOrderRequest,
     PlaceOrderResponse,
+    SymbolOrdersCancelRequest,
 )
 from bittrade_binance_websocket.models.response_message import ResponseMessage
 from IPython.terminal import embed
+
+from bittrade_binance_websocket.rest.symbol_orders_cancel import (
+    accept_empty_orders_list,
+)
+from .sign import sign_request_factory
 
 
 console = RichHandler()
@@ -50,9 +57,15 @@ def add_keys(x):
     return x
 
 
-framework = get_framework(spot_trade_signer=add_keys, load_markets=False)
+framework = get_framework(
+    spot_trade_signer=add_keys,
+    spot_trade_signer_http=sign_request_factory(key, secret),
+    load_markets=False,
+)
 framework.spot_trade_socket_messages.subscribe(print, print, print)
-
+framework.spot_symbol_orders_cancel_http(
+    SymbolOrdersCancelRequest(symbol="BTCUSDT")
+).pipe(accept_empty_orders_list()).subscribe(print, print, print)
 
 order_request = PlaceOrderRequest(
     symbol="BTCUSDT",

@@ -78,6 +78,23 @@ class PlaceOrderResponse:
     transactTime: int
 
 
+class SymbolOrderResponseItem(TypedDict):
+    symbol: str
+    origClientOrderId: str
+    orderId: int
+    orderListId: int
+    clientOrderId: str
+    price: str
+    origQty: str
+    executedQty: str
+    cummulativeQuoteQty: str
+    status: str
+    timeInForce: str
+    type: str
+    side: str
+    selfTradePreventionMode: str
+
+
 @dataclasses.dataclass
 class OrderCancelRequest:
     symbol: str
