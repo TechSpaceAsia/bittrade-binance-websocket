@@ -11,7 +11,7 @@ import requests
 
 from elm_framework_helpers.output import debug_operator
 
-from bittrade_binance_websocket.models.enhanced_websocket import del_none
+from bittrade_binance_websocket.sign import del_none
 
 
 def sign_request_factory(key: str, secret: str):

@@ -24,6 +24,9 @@ from bittrade_binance_websocket.events.cancel_order import (
 from bittrade_binance_websocket.rest.symbol_orders_cancel import (
     delete_symbol_order_http_factory,
 )
+from bittrade_binance_websocket.rest.current_open_orders import (
+    current_open_orders_http_factory,
+)
 from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsocket
 from bittrade_binance_websocket.models.framework import FrameworkContext
 from bittrade_binance_websocket.models.order import (
@@ -34,7 +37,6 @@ from bittrade_binance_websocket.models.order import (
     OrderType,
     PlaceOrderRequest,
     PlaceOrderResponse,
-    SymbolOrdersCancelRequest,
     SymbolOrderResponseItem,
 )
 from bittrade_binance_websocket.rest.symbol_price_ticker import symbol_price_ticker_http
@@ -117,6 +119,9 @@ def get_framework(
     spot_symbol_orders_cancel_http = delete_symbol_order_http_factory(
         spot_trade_signer_http
     )
+    spot_current_open_orders_http = current_open_orders_http_factory(
+        spot_trade_signer_http
+    )
 
     return FrameworkContext(
         all_subscriptions=all_subscriptions,
@@ -134,6 +139,7 @@ def get_framework(
         spot_order_cancel=spot_order_cancel,
         spot_symbol_orders_cancel=spot_symbol_orders_cancel,
         spot_symbol_orders_cancel_http=spot_symbol_orders_cancel_http,
+        spot_current_open_orders_http=spot_current_open_orders_http,
         user_data_stream_messages=user_data_stream_messages,
         user_data_stream_sockets=user_data_stream_socket,
         user_data_stream_socket_bundles=user_data_stream_socket_bundles,

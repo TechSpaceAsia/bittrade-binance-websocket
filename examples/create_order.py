@@ -35,7 +35,7 @@ from IPython.terminal import embed
 from bittrade_binance_websocket.rest.symbol_orders_cancel import (
     accept_empty_orders_list,
 )
-from .sign import sign_request_factory
+from bittrade_binance_websocket.sign import sign_request_factory
 
 
 console = RichHandler()
@@ -63,9 +63,13 @@ framework = get_framework(
     load_markets=False,
 )
 framework.spot_trade_socket_messages.subscribe(print, print, print)
-framework.spot_symbol_orders_cancel_http(
-    SymbolOrdersCancelRequest(symbol="BTCUSDT")
-).pipe(accept_empty_orders_list()).subscribe(print, print, print)
+# framework.spot_symbol_orders_cancel_http(
+#     SymbolOrdersCancelRequest(symbol="BTCUSDT")
+# ).pipe(accept_empty_orders_list()).subscribe(print, print, print)
+
+framework.spot_current_open_orders_http(SymbolOrdersCancelRequest("BTCUSDT")).subscribe(
+    print, print, print
+)
 
 order_request = PlaceOrderRequest(
     symbol="BTCUSDT",
