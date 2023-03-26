@@ -9,8 +9,18 @@ get_listen_key = listen_key.get_listen_key_http_factory(signer)
 result = get_listen_key().run()
 print(result)
 
-ping_result = listen_key.ping_listen_key(result.get("listenKey")).run()
+ping_result = listen_key.ping_listen_key_http_factory(signer)(
+    result.get("listenKey")
+).run()
 print(ping_result)
 
-close_result = listen_key.close_listen_key(result.get("listenKey")).run()
+close_result = listen_key.delete_listen_key_http_factory(signer)(
+    result.get("listenKey")
+).run()
 print(close_result)
+
+isolated_margin_get_listen_key = listen_key.isolated_margin_get_listen_key_http_factory(
+    signer
+)
+result = isolated_margin_get_listen_key("BTCUSDT").run()
+print(result)

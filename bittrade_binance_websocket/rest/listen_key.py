@@ -41,3 +41,49 @@ def delete_listen_key_http_factory(listen_key: str):
             "listenKey": listen_key,
         },
     )
+
+
+@http_factory(listen_key.CreateListenKeyResponse)
+def isolated_margin_get_listen_key_http_factory(symbol: str):
+    return request.RequestMessage(
+        method="POST",
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
+        params={
+            "symbol": symbol,
+        },
+    )
+
+
+@http_factory(None)
+def isolated_margin_ping_listen_key_http_factory(listen_key: str, symbol: str):
+    return request.RequestMessage(
+        method="PUT",
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
+        params={
+            "listenKey": listen_key,
+            "symbol": symbol,
+        },
+    )
+
+
+@http_factory(listen_key.CreateListenKeyResponse)
+def isolated_margin_get_active_listen_key_http_factory(symbol: str):
+    return request.RequestMessage(
+        method="POST",
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
+        params={
+            "symbol": symbol,
+        },
+    )
+
+
+@http_factory(None)
+def isolated_margin_delete_listen_key_http_factory(listen_key: str, symbol: str):
+    return request.RequestMessage(
+        method="DELETE",
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
+        params={
+            "listenKey": listen_key,
+            "symbol": symbol,
+        },
+    )
