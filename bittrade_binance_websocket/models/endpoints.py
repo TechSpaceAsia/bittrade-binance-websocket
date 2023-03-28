@@ -8,5 +8,8 @@ class BinanceEndpoints(Enum):
     LISTEN_KEY = "/api/v3/userDataStream"
     MARGIN_OPEN_ORDERS = "/sapi/v1/margin/openOrders"
     QUERY_CROSS_MARGIN_ACCOUNT_DETAILS = "/sapi/v1/margin/account"
+    QUERY_ISOLATED_MARGIN_ACCOUNT_DETAILS = "/sapi/v1/margin/isolated/account"
+    QUERY_ISOLATED_MARGIN_FEE_DATA = "/sapi/v1/margin/isolatedMarginData"
+    QUERY_CROSS_MARGIN_FEE_DATA = "/sapi/v1/margin/crossMarginData"
     SYMBOL_ORDERS_CANCEL = "/api/v3/openOrders"
     SYMBOL_PRICE_TICKER = "/api/v3/ticker/price"

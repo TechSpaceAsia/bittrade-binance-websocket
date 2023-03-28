@@ -19,8 +19,11 @@ from bittrade_binance_websocket.events.cancel_order import (
     cancel_order_factory,
     cancel_symbol_orders_factory,
 )
-from bittrade_binance_websocket.rest.query_cross_margin_account import (
-    query_cross_margin_account_details_http_factory,
+from bittrade_binance_websocket.rest.query_margin_account import (
+    query_margin_account_details_http_factory,
+)
+from bittrade_binance_websocket.rest.query_margin_fee_data import (
+    query_margin_fee_data_http_factory,
 )
 from bittrade_binance_websocket.rest.symbol_orders_cancel import (
     delete_symbol_order_http_factory,
@@ -121,8 +124,11 @@ def get_framework(
     margin_current_open_orders_http = margin_current_open_orders_http_factory(
         spot_trade_signer_http
     )
-    query_cross_margin_account_details_http = (
-        query_cross_margin_account_details_http_factory(spot_trade_signer_http)
+    query_cross_margin_account_details_http = query_margin_account_details_http_factory(
+        spot_trade_signer_http
+    )
+    query_margin_fee_data_http = query_margin_fee_data_http_factory(
+        spot_trade_signer_http
     )
 
     return FrameworkContext(
@@ -136,6 +142,7 @@ def get_framework(
         market_symbol_price_ticker_http=symbol_price_ticker_http,
         margin_current_open_orders_http=margin_current_open_orders_http,
         margin_query_cross_margin_account_details_http=query_cross_margin_account_details_http,
+        margin_query_margin_fee_data_http=query_margin_fee_data_http,
         spot_trade_socket_bundles=spot_trade_socket_bundles,
         spot_trade_socket_messages=spot_trade_socket_messages,
         spot_trade_sockets=spot_trade_sockets,

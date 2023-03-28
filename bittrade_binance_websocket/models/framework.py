@@ -61,7 +61,10 @@ class FrameworkContext:
         Observable[SpotResponseMessage[list[SymbolOrderResponseItem]]],
     ]
     margin_query_cross_margin_account_details_http: Callable[
-        [], Observable[margin_account.AccountInfo]
+        [Optional[bool]], Observable[margin_account.AccountInfo]
+    ]
+    margin_query_margin_fee_data_http: Callable[
+        [str, Optional[bool]], Observable[margin_account.LeverageData]
     ]
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]

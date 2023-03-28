@@ -19,3 +19,16 @@ class AccountInfo(TypedDict):
     tradeEnabled: bool
     transferEnabled: bool
     userAssets: list[UserAsset]
+
+
+class CoinData(TypedDict):
+    coin: str
+    dailyInterest: str
+    borrowLimit: str
+
+
+class LeverageData(TypedDict):
+    vipLevel: int
+    symbol: str
+    leverage: str
+    data: list[CoinData]

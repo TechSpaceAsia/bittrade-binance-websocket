@@ -63,12 +63,10 @@ framework.spot_trade_socket_messages.subscribe(print, print, print)
 # framework.spot_current_open_orders_http(SymbolOrdersCancelRequest("BTCUSDT")).subscribe(
 #     print, print, print
 # )
-framework.margin_current_open_orders_http(
-    MarginSymbolOrdersRequest(symbol="BTCUSDT", isIsolated=True)
-).subscribe(print, print, print)
-framework.margin_query_cross_margin_account_details_http().subscribe(
-    print, print, print
-)
+# framework.margin_current_open_orders_http(
+#     MarginSymbolOrdersRequest(symbol="BTCUSDT", isIsolated=True)
+# ).subscribe(print, print, print)
+r = framework.margin_query_margin_fee_data_http("BTCUSDT", True).run()
 
 order_request = PlaceOrderRequest(
     symbol="BTCUSDT",
