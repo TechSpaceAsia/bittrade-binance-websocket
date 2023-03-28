@@ -66,6 +66,9 @@ framework.spot_trade_socket_messages.subscribe(print, print, print)
 framework.margin_current_open_orders_http(
     MarginSymbolOrdersRequest(symbol="BTCUSDT", isIsolated=True)
 ).subscribe(print, print, print)
+framework.margin_query_cross_margin_account_details_http().subscribe(
+    print, print, print
+)
 
 order_request = PlaceOrderRequest(
     symbol="BTCUSDT",
@@ -85,9 +88,9 @@ ready = framework.spot_trade_guaranteed_sockets.pipe(
     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
 )
 
-framework.spot_trade_socket_messages.subscribe(
-    info_observer("SPOT TRADE", "bittrade_binance_websocket")
-)
+# framework.spot_trade_socket_messages.subscribe(
+#     info_observer("SPOT TRADE", "bittrade_binance_websocket")
+# )
 
 
 sub = framework.spot_trade_socket_bundles.connect()

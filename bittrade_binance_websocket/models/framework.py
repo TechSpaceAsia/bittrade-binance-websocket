@@ -10,6 +10,7 @@ from reactivex.scheduler import ThreadPoolScheduler
 from elm_framework_helpers.websockets import models
 from bittrade_binance_websocket.models import UserFeedMessage
 from bittrade_binance_websocket.models.response_message import SpotResponseMessage
+from bittrade_binance_websocket.models.rest import margin_account
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
 from bittrade_binance_websocket.models.rest.symbol_price_ticker import SymbolPriceTicker
 from bittrade_binance_websocket.models.order import (
@@ -58,6 +59,9 @@ class FrameworkContext:
     margin_current_open_orders_http: Callable[
         [MarginSymbolOrdersRequest],
         Observable[SpotResponseMessage[list[SymbolOrderResponseItem]]],
+    ]
+    margin_query_cross_margin_account_details_http: Callable[
+        [], Observable[margin_account.AccountInfo]
     ]
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]
