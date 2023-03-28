@@ -67,6 +67,13 @@ class PlaceOrderRequest:
         str
     ] = None  # Arbitrary unique ID among open orders. Automatically generated if not sent
     recvWindow: Optional[int] = None
+    is_margin: Optional[bool] = False
+    isIsolated: Optional[bool] = None
+
+    def to_dict(self):
+        as_dict = dataclasses.asdict(self)
+        del as_dict["is_margin"]
+        return as_dict
 
 
 @dataclasses.dataclass
@@ -109,6 +116,13 @@ class OrderCancelRequest:
 class SymbolOrdersCancelRequest:
     symbol: str
     recvWindow: Optional[int] = None
+    margin: Optional[bool] = False
+    is_isolated: Optional[bool] = None
+
+    def to_dict(self):
+        as_dict = dataclasses.asdict(self)
+        del as_dict["margin"]
+        return as_dict
 
 
 @dataclasses.dataclass

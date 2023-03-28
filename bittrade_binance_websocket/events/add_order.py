@@ -47,7 +47,7 @@ def create_order_factory(
             request_id, obs = current_socket.request_to_observable(
                 {
                     "method": "order.place",
-                    "params": dataclasses.asdict(request),
+                    "params": request.to_dict(),
                 }
             )
             sub.add(
@@ -86,7 +86,7 @@ def add_order(
         order_request = {
             "id": request_id,
             "method": "order.place",
-            "params": dataclasses.asdict(order_params),
+            "params": order_params.to_dict(),
         }
         logger.info(f"add order request, {order_request}")
 

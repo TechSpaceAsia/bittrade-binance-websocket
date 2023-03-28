@@ -39,7 +39,10 @@ from bittrade_binance_websocket.rest.listen_key import (
     delete_listen_key_http_factory,
     get_active_listen_key_http_factory,
     get_listen_key_http_factory,
+    isolated_margin_delete_listen_key_http_factory,
+    isolated_margin_get_active_listen_key_http_factory,
     isolated_margin_get_listen_key_http_factory,
+    isolated_margin_ping_listen_key_http_factory,
     ping_listen_key_http_factory,
 )
 
@@ -48,21 +51,15 @@ logger = getLogger(__name__)
 
 def get_framework(
     *,
-    add_token: Callable[
-        [Observable[models.ResponseMessage]],
-        Callable[
-            [Observable[models.EnhancedWebsocket]], Observable[models.ResponseMessage]
-        ],
-    ] = None,
     user_stream_signer_http: Callable[
         [requests.models.Request], requests.models.Request
-    ] = None,
+    ] = None,  # type: ignore
     spot_trade_signer: Callable[
         [models.EnhancedWebsocket], models.EnhancedWebsocket
-    ] = None,
+    ] = None,  # type: ignore
     spot_trade_signer_http: Callable[
         [requests.models.Request], requests.models.Request
-    ] = None,
+    ] = None,  # type: ignore
     load_markets=True,
 ) -> FrameworkContext:
     exchange = binance()
@@ -77,6 +74,15 @@ def get_framework(
     get_listen_key_http = get_listen_key_http_factory(user_stream_signer_http)
     keep_alive_listen_key_http = ping_listen_key_http_factory(user_stream_signer_http)
     delete_listen_key_http = delete_listen_key_http_factory(user_stream_signer_http)
+    isolated_margin_get_listen_key_http = (
+        isolated_margin_get_active_listen_key_http_factory(user_stream_signer_http)
+    )
+    isolated_margin_keep_alive_listen_key_http = (
+        isolated_margin_ping_listen_key_http_factory(user_stream_signer_http)
+    )
+    isolated_margin_delete_listen_key_http = (
+        isolated_margin_delete_listen_key_http_factory(user_stream_signer_http)
+    )
 
     # Set up sockets
     user_data_stream_socket_bundles = private_websocket_user_stream(
@@ -89,6 +95,15 @@ def get_framework(
     user_data_stream_messages = user_data_stream_socket_bundles.pipe(
         connection_operators.keep_messages_only()
     )
+
+    def isolated_margin_websocket_factory(symbol: str):
+        key_getter = lambda: isolated_margin_get_listen_key_http(symbol)
+        keep_alive = lambda key: isolated_margin_keep_alive_listen_key_http(key, symbol)
+        socket_bundles = private_websocket_user_stream(key_getter, keep_alive)
+        socket = socket_bundles.pipe(connection_operators.keep_new_socket_only())
+
+        stream_messages = socket_bundles.pipe(connection_operators.keep_messages_only())
+        return socket_bundles, socket, stream_messages
 
     spot_trade_socket_bundles = private_websocket_connection()
     spot_trade_sockets = spot_trade_socket_bundles.pipe(
@@ -118,9 +133,6 @@ def get_framework(
     spot_current_open_orders_http = current_open_orders_http_factory(
         spot_trade_signer_http
     )
-    isolated_margin_get_listen_key_http = isolated_margin_get_listen_key_http_factory(
-        spot_trade_signer_http
-    )
     margin_current_open_orders_http = margin_current_open_orders_http_factory(
         spot_trade_signer_http
     )
@@ -138,6 +150,7 @@ def get_framework(
         get_active_listen_key_http=get_active_listen_key_http,
         get_listen_key_http=get_listen_key_http,
         isolated_margin_get_listen_key_http=isolated_margin_get_listen_key_http,
+        isolated_websockets_factory=isolated_margin_websocket_factory,
         keep_alive_listen_key_http=keep_alive_listen_key_http,
         market_symbol_price_ticker_http=symbol_price_ticker_http,
         margin_current_open_orders_http=margin_current_open_orders_http,

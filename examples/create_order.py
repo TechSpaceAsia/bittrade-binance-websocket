@@ -55,7 +55,8 @@ framework = get_framework(
     spot_trade_signer_http=sign_request_factory(key, secret),
     load_markets=False,
 )
-framework.spot_trade_socket_messages.subscribe(print, print, print)
+# framework.spot_trade_socket_messages.subscribe(print, print, print)
+framework.isolated_margin_trade_socket_messages.subscribe(print, print, print)
 # framework.spot_symbol_orders_cancel_http(
 #     SymbolOrdersCancelRequest(symbol="BTCUSDT")
 # ).pipe(accept_empty_orders_list()).subscribe(print, print, print)
@@ -66,7 +67,7 @@ framework.spot_trade_socket_messages.subscribe(print, print, print)
 # framework.margin_current_open_orders_http(
 #     MarginSymbolOrdersRequest(symbol="BTCUSDT", isIsolated=True)
 # ).subscribe(print, print, print)
-r = framework.margin_query_margin_fee_data_http("BTCUSDT", True).run()
+# r = framework.margin_query_margin_fee_data_http("BTCUSDT", True).run()
 
 order_request = PlaceOrderRequest(
     symbol="BTCUSDT",
@@ -80,15 +81,23 @@ order_request = PlaceOrderRequest(
     stopPrice=None,
     trailingDelta=None,
     newClientOrderId=str(uuid4()),
+    isIsolated=True,
+    is_margin=True,
 )
 
-ready = framework.spot_trade_guaranteed_sockets.pipe(
+ready = framework.isolated_margin_trade_guaranteed_sockets.pipe(
     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
 )
+# ready = framework.spot_trade_guaranteed_sockets.pipe(
+#     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
+# )
 
 # framework.spot_trade_socket_messages.subscribe(
 #     info_observer("SPOT TRADE", "bittrade_binance_websocket")
 # )
+framework.spot_trade_socket_messages.subscribe(
+    info_observer("TRADE", "bittrade_binance_websocket")
+)
 
 
 sub = framework.spot_trade_socket_bundles.connect()
