@@ -16,3 +16,14 @@ def current_open_orders_http_factory(params: order.SymbolOrdersCancelRequest):
         endpoint=endpoints.BinanceEndpoints.CURRENT_OPEN_ORDERS,
         params={"symbol": params.symbol, "recvWindow": params.recvWindow},
     )
+
+
+@http_factory(list[order.SymbolOrderResponseItem])
+def margin_current_open_orders_http_factory(
+    params: order.MarginSymbolOrdersRequest,
+):
+    return request.RequestMessage(
+        method="GET",
+        endpoint=endpoints.BinanceEndpoints.MARGIN_OPEN_ORDERS,
+        params=params.to_dict(),
+    )

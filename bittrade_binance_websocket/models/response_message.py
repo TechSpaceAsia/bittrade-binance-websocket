@@ -1,11 +1,13 @@
 import dataclasses
-from typing import Any, Dict, List, TypedDict
+from typing import Any, Dict, Generic, List, TypeVar, TypedDict
 from enum import Enum
 
 ResponseMessage = Dict | List
 
+Result = TypeVar("Result", dict, list)
 
-class SpotResponseMessage(TypedDict):
+
+class SpotResponseMessage(TypedDict, Generic[Result]):
     id: str
     status: int
-    result: dict | list
+    result: Result

@@ -8,7 +8,6 @@ from reactivex.observable import ConnectableObservable
 from reactivex.disposable import CompositeDisposable
 from reactivex.scheduler import ThreadPoolScheduler
 from elm_framework_helpers.websockets import models
-from bittrade_binance_websocket.events.cancel_order import CancelOrderRequest
 from bittrade_binance_websocket.models import UserFeedMessage
 from bittrade_binance_websocket.models.response_message import SpotResponseMessage
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
@@ -18,6 +17,8 @@ from bittrade_binance_websocket.models.order import (
     SymbolOrdersCancelRequest,
     PlaceOrderRequest,
     PlaceOrderResponse,
+    MarginSymbolOrdersRequest,
+    SymbolOrderResponseItem,
 )
 
 
@@ -32,6 +33,9 @@ class FrameworkContext:
     exchange: binance
     get_active_listen_key_http: Callable[[], Observable[CreateListenKeyResponse]]
     get_listen_key_http: Callable[[], Observable[CreateListenKeyResponse]]
+    isolated_margin_get_listen_key_http: Callable[
+        [str], Observable[CreateListenKeyResponse]
+    ]
     delete_listen_key_http: Callable[[str], Observable[None]]
     keep_alive_listen_key_http: Callable[[str], Observable[None]]
     market_symbol_price_ticker_http: Callable[[str], Observable[SymbolPriceTicker]]
@@ -50,6 +54,10 @@ class FrameworkContext:
     ]
     spot_current_open_orders_http: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
+    ]
+    margin_current_open_orders_http: Callable[
+        [MarginSymbolOrdersRequest],
+        Observable[SpotResponseMessage[list[SymbolOrderResponseItem]]],
     ]
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]

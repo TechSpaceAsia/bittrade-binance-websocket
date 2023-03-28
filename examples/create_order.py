@@ -1,22 +1,14 @@
 import logging
-import os
-import time
-from typing import Callable, Dict, Tuple, cast
 from uuid import uuid4
-from expression import is_ok
-import reactivex
 from rich.logging import RichHandler
 from elm_framework_helpers.websockets.operators import connection_operators
 from elm_framework_helpers.output import debug_observer, debug_operator, info_observer
-from ccxt import binance
 from reactivex import Observable, operators
 from bittrade_binance_websocket.connection.private import private_websocket_connection
 from elm_framework_helpers.config import read_config
 
 from bittrade_binance_websocket.events.add_order import add_order
 from bittrade_binance_websocket.events.cancel_order import cancel_order
-from bittrade_binance_websocket.events.ping import ping
-from bittrade_binance_websocket.events.request_response import add_keys
 from bittrade_binance_websocket.framework.framework import get_framework
 from bittrade_binance_websocket.messages.listen import filter_new_socket_only
 from bittrade_binance_websocket.models.order import (
@@ -24,6 +16,7 @@ from bittrade_binance_websocket.models.order import (
     OrderResponseType,
     OrderSide,
     OrderTimeInForceType,
+    MarginSymbolOrdersRequest,
     OrderType,
     PlaceOrderRequest,
     PlaceOrderResponse,
@@ -67,9 +60,12 @@ framework.spot_trade_socket_messages.subscribe(print, print, print)
 #     SymbolOrdersCancelRequest(symbol="BTCUSDT")
 # ).pipe(accept_empty_orders_list()).subscribe(print, print, print)
 
-framework.spot_current_open_orders_http(SymbolOrdersCancelRequest("BTCUSDT")).subscribe(
-    print, print, print
-)
+# framework.spot_current_open_orders_http(SymbolOrdersCancelRequest("BTCUSDT")).subscribe(
+#     print, print, print
+# )
+framework.margin_current_open_orders_http(
+    MarginSymbolOrdersRequest(symbol="BTCUSDT", isIsolated=True)
+).subscribe(print, print, print)
 
 order_request = PlaceOrderRequest(
     symbol="BTCUSDT",
