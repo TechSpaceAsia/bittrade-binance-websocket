@@ -80,7 +80,7 @@ def cancel_symbol_orders_factory(
             request_id, obs = current_socket.request_to_observable(
                 {
                     "method": "openOrders.cancelAll",
-                    "params": dataclasses.asdict(request),
+                    "params": request.to_dict(),
                 }
             )
             sub.add(
