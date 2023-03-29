@@ -116,3 +116,16 @@ def sign_request_factory(key: str, secret: str):
         return request
 
     return sign
+
+
+def user_stream_signer_factory(key: str):
+    """
+    Use this for endpoints that require the USER_STREAM type of security.
+    Refer to https://binance-docs.github.io/apidocs/spot/en/#endpoint-security-type
+    """
+
+    def _add_api_key(request: requests.models.Request):
+        request.headers.update({"X-MBX-APIKEY": key})
+        return request
+
+    return _add_api_key

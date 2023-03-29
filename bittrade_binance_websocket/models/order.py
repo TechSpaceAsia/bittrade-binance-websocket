@@ -73,6 +73,8 @@ class PlaceOrderRequest:
     def to_dict(self):
         as_dict = dataclasses.asdict(self)
         del as_dict["is_margin"]
+        if not self.is_margin:
+            del as_dict["isIsolated"]
         return as_dict
 
 

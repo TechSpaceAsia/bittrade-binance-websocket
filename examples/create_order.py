@@ -11,6 +11,7 @@ from bittrade_binance_websocket.events.add_order import add_order
 from bittrade_binance_websocket.events.cancel_order import cancel_order
 from bittrade_binance_websocket.framework.framework import get_framework
 from bittrade_binance_websocket.messages.listen import filter_new_socket_only
+from bittrade_binance_websocket.sign import user_stream_signer_factory
 from bittrade_binance_websocket.models.order import (
     OrderCancelRequest,
     OrderResponseType,
@@ -35,7 +36,8 @@ console = RichHandler()
 console.setLevel(
     logging.DEBUG
 )  # <- if you wish to see subscribe/unsubscribe and raw messages, change to DEBUG
-logger = logging.getLogger("")
+logger_name = ""
+logger = logging.getLogger(logger_name)
 # logger = logging.getLogger("bittrade_binance_websocket")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(console)
@@ -51,12 +53,12 @@ def add_keys(x):
 
 
 framework = get_framework(
+    user_stream_signer_http=user_stream_signer_factory(key),
     spot_trade_signer=add_keys,
     spot_trade_signer_http=sign_request_factory(key, secret),
     load_markets=False,
 )
 # framework.spot_trade_socket_messages.subscribe(print, print, print)
-framework.isolated_margin_trade_socket_messages.subscribe(print, print, print)
 # framework.spot_symbol_orders_cancel_http(
 #     SymbolOrdersCancelRequest(symbol="BTCUSDT")
 # ).pipe(accept_empty_orders_list()).subscribe(print, print, print)
@@ -85,9 +87,13 @@ order_request = PlaceOrderRequest(
     is_margin=True,
 )
 
-ready = framework.isolated_margin_trade_guaranteed_sockets.pipe(
+bundles, sockets, messages = framework.isolated_websockets_factory("BTCUSDT")
+
+ready = sockets.pipe(
     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
 )
+ready.subscribe(debug_observer("READY", logger_name))
+messages.subscribe(debug_observer("MESSAGE", logger_name))
 # ready = framework.spot_trade_guaranteed_sockets.pipe(
 #     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
 # )
@@ -95,12 +101,12 @@ ready = framework.isolated_margin_trade_guaranteed_sockets.pipe(
 # framework.spot_trade_socket_messages.subscribe(
 #     info_observer("SPOT TRADE", "bittrade_binance_websocket")
 # )
-framework.spot_trade_socket_messages.subscribe(
-    info_observer("TRADE", "bittrade_binance_websocket")
-)
+# framework.spot_trade_socket_messages.subscribe(
+#     info_observer("TRADE", "bittrade_binance_websocket")
+# )
 
 
-sub = framework.spot_trade_socket_bundles.connect()
+sub = bundles.connect()
 
 # Can be triggered manually or part of a concat with ready etc
 # framework.spot_order_create(order_request).subscribe(print, print, print)

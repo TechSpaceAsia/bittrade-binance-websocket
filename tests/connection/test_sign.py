@@ -1,7 +1,7 @@
 import hmac
 
 import pytest
-from bittrade_binance_websocket.connection.sign import (
+from bittrade_binance_websocket.sign import (
     encode_query_string,
     get_signature,
     to_sorted_qs,
@@ -67,7 +67,6 @@ def test_generate_signature(request_params):
 
 def test_prepared_request(request_params):
     message = {"id": "abc", "method": "order.place", "params": request_params}
-
     websocket = EnhancedWebsocket(None)
     websocket.key = "vmPUZE6mv9SD5VNHk4HlWFsOr6aKE2zvsw0MuIgwCIPy6utIco14y7Ju91duEh8A"
     websocket.secret = (
@@ -77,7 +76,7 @@ def test_prepared_request(request_params):
     # Monkey patch the timestamp
     websocket.get_timestamp = lambda: "1645423376532"
 
-    id, json_string = websocket.prepare_request(message, sign=True)
+    id, json_string = websocket.prepare_request(message)
 
     assert id == "abc"
     assert (
