@@ -10,20 +10,11 @@ from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
 
 
 @http_factory(list[order.SymbolOrderResponseItem])
-def current_open_orders_http_factory(params: order.SymbolOrdersCancelRequest):
+def open_orders_http_factory(params: order.SymbolOrdersCancelRequest):
     return request.RequestMessage(
         method="GET",
-        endpoint=endpoints.BinanceEndpoints.CURRENT_OPEN_ORDERS,
-        params={"symbol": params.symbol, "recvWindow": params.recvWindow},
-    )
-
-
-@http_factory(list[order.SymbolOrderResponseItem])
-def margin_current_open_orders_http_factory(
-    params: order.MarginSymbolOrdersRequest,
-):
-    return request.RequestMessage(
-        method="GET",
-        endpoint=endpoints.BinanceEndpoints.MARGIN_OPEN_ORDERS,
+        endpoint=endpoints.BinanceEndpoints.MARGIN_OPEN_ORDERS
+        if params.is_margin
+        else endpoints.BinanceEndpoints.SPOT_OPEN_ORDERS,
         params=params.to_dict(),
     )

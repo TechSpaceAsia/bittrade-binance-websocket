@@ -49,7 +49,7 @@ def cancel_order_factory(
             request_id, obs = current_socket.request_to_observable(
                 {
                     "method": "order.cancel",
-                    "params": dataclasses.asdict(request),
+                    "params": request.to_dict(),
                 }
             )
             sub.add(
@@ -113,7 +113,7 @@ def cancel_order(
             )
 
         sign = get_signature(socket.secret)
-        request_dict = dataclasses.asdict(request)
+        request_dict = request.to_dict()
         request_dict["apiKey"] = socket.key
         request_dict["timestamp"] = timestamp
 

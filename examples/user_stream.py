@@ -1,9 +1,6 @@
 import time
 from bittrade_binance_websocket.rest import listen_key
 from elm_framework_helpers.config import read_config
-from bittrade_binance_websocket.connection.private_user_stream import (
-    private_websocket_user_stream,
-)
 from bittrade_binance_websocket.framework import get_framework
 from .sign import add_api_key_factory
 import logging

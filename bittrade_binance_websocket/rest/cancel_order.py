@@ -8,11 +8,11 @@ from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
 
 
 @http_factory(order.SymbolOrderResponseItem)
-def create_order_http_factory(
-    params: order.PlaceOrderRequest,
+def cancel_order_http_factory(
+    params: order.OrderCancelRequest,
 ):
     return request.RequestMessage(
-        method="POST",
+        method="DELETE",
         endpoint=endpoints.BinanceEndpoints.MARGIN_ORDER
         if params.is_margin
         else endpoints.BinanceEndpoints.SPOT_ORDER,

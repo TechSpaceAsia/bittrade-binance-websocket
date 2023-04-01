@@ -112,18 +112,29 @@ class OrderCancelRequest:
     newClientOrderId: Optional[str] = None
     cancelRestrictions: Optional[OrderCancelRestrictions] = None
     recvWindow: Optional[int] = None
+    is_margin: Optional[bool] = False
+    isIsolated: Optional[bool] = None
+
+    def to_dict(self):
+        as_dict = dataclasses.asdict(self)
+        del as_dict["is_margin"]
+        if self.is_margin:
+            as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
+        return as_dict
 
 
 @dataclasses.dataclass
 class SymbolOrdersCancelRequest:
     symbol: str
     recvWindow: Optional[int] = None
-    margin: Optional[bool] = False
-    is_isolated: Optional[bool] = None
+    is_margin: Optional[bool] = False
+    isIsolated: Optional[bool] = None
 
     def to_dict(self):
         as_dict = dataclasses.asdict(self)
-        del as_dict["margin"]
+        del as_dict["is_margin"]
+        if self.is_margin:
+            as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
         return as_dict
 
 

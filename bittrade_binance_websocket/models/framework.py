@@ -47,18 +47,16 @@ class FrameworkContext:
     spot_trade_guaranteed_sockets: models.EnhancedWebsocketBehaviorSubject
     spot_order_create: Callable[[PlaceOrderRequest], Observable[PlaceOrderResponse]]
     spot_order_cancel: Callable[[OrderCancelRequest], Observable[dict]]
+    order_create_http: Callable[[PlaceOrderRequest], Observable[PlaceOrderResponse]]
+    order_cancel_http: Callable[[OrderCancelRequest], Observable[dict]]
     spot_symbol_orders_cancel: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
     ]
-    spot_symbol_orders_cancel_http: Callable[
+    symbol_orders_cancel_http: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
     ]
-    spot_current_open_orders_http: Callable[
+    current_open_orders_http: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
-    ]
-    margin_current_open_orders_http: Callable[
-        [MarginSymbolOrdersRequest],
-        Observable[SpotResponseMessage[list[SymbolOrderResponseItem]]],
     ]
     margin_query_cross_margin_account_details_http: Callable[
         [Optional[bool]], Observable[margin_account.AccountInfo]
@@ -69,7 +67,7 @@ class FrameworkContext:
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]
     user_data_stream_messages: Observable[UserFeedMessage]
-    isolated_websockets_factory: Callable[
+    isolated_margin_user_stream_factory: Callable[
         [str],
         tuple[
             ConnectableObservable[models.WebsocketBundle],

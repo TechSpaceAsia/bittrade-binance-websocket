@@ -19,6 +19,7 @@ from bittrade_binance_websocket.events.cancel_order import (
     cancel_order_factory,
     cancel_symbol_orders_factory,
 )
+from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
 from bittrade_binance_websocket.rest.query_margin_account import (
     query_margin_account_details_http_factory,
 )
@@ -28,9 +29,11 @@ from bittrade_binance_websocket.rest.query_margin_fee_data import (
 from bittrade_binance_websocket.rest.symbol_orders_cancel import (
     delete_symbol_order_http_factory,
 )
+from bittrade_binance_websocket.rest.create_order import (
+    create_order_http_factory,
+)
 from bittrade_binance_websocket.rest.current_open_orders import (
-    current_open_orders_http_factory,
-    margin_current_open_orders_http_factory,
+    open_orders_http_factory,
 )
 from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsocket
 from bittrade_binance_websocket.models.framework import FrameworkContext
@@ -57,7 +60,7 @@ def get_framework(
     spot_trade_signer: Callable[
         [models.EnhancedWebsocket], models.EnhancedWebsocket
     ] = None,  # type: ignore
-    spot_trade_signer_http: Callable[
+    trade_signer_http: Callable[
         [requests.models.Request], requests.models.Request
     ] = None,  # type: ignore
     load_markets=True,
@@ -96,7 +99,7 @@ def get_framework(
         connection_operators.keep_messages_only()
     )
 
-    def isolated_margin_websocket_factory(symbol: str):
+    def isolated_margin_user_stream_factory(symbol: str):
         key_getter = lambda: isolated_margin_get_listen_key_http(symbol)
         keep_alive = lambda key: isolated_margin_keep_alive_listen_key_http(key, symbol)
         socket_bundles = private_websocket_user_stream(key_getter, keep_alive)
@@ -127,21 +130,12 @@ def get_framework(
     spot_symbol_orders_cancel = cancel_symbol_orders_factory(
         spot_trade_guaranteed_sockets, spot_trade_socket_messages
     )
-    spot_symbol_orders_cancel_http = delete_symbol_order_http_factory(
-        spot_trade_signer_http
-    )
-    spot_current_open_orders_http = current_open_orders_http_factory(
-        spot_trade_signer_http
-    )
-    margin_current_open_orders_http = margin_current_open_orders_http_factory(
-        spot_trade_signer_http
-    )
+    symbol_orders_cancel_http = delete_symbol_order_http_factory(trade_signer_http)
+    open_orders_http = open_orders_http_factory(trade_signer_http)
     query_cross_margin_account_details_http = query_margin_account_details_http_factory(
-        spot_trade_signer_http
+        trade_signer_http
     )
-    query_margin_fee_data_http = query_margin_fee_data_http_factory(
-        spot_trade_signer_http
-    )
+    query_margin_fee_data_http = query_margin_fee_data_http_factory(trade_signer_http)
 
     return FrameworkContext(
         all_subscriptions=all_subscriptions,
@@ -150,10 +144,9 @@ def get_framework(
         get_active_listen_key_http=get_active_listen_key_http,
         get_listen_key_http=get_listen_key_http,
         isolated_margin_get_listen_key_http=isolated_margin_get_listen_key_http,
-        isolated_websockets_factory=isolated_margin_websocket_factory,
+        isolated_margin_user_stream_factory=isolated_margin_user_stream_factory,
         keep_alive_listen_key_http=keep_alive_listen_key_http,
         market_symbol_price_ticker_http=symbol_price_ticker_http,
-        margin_current_open_orders_http=margin_current_open_orders_http,
         margin_query_cross_margin_account_details_http=query_cross_margin_account_details_http,
         margin_query_margin_fee_data_http=query_margin_fee_data_http,
         spot_trade_socket_bundles=spot_trade_socket_bundles,
@@ -163,8 +156,10 @@ def get_framework(
         spot_order_create=spot_order_create,
         spot_order_cancel=spot_order_cancel,
         spot_symbol_orders_cancel=spot_symbol_orders_cancel,
-        spot_symbol_orders_cancel_http=spot_symbol_orders_cancel_http,
-        spot_current_open_orders_http=spot_current_open_orders_http,
+        order_create_http=create_order_http_factory(trade_signer_http),
+        order_cancel_http=cancel_order_http_factory(trade_signer_http),
+        symbol_orders_cancel_http=symbol_orders_cancel_http,
+        current_open_orders_http=open_orders_http,
         user_data_stream_messages=user_data_stream_messages,
         user_data_stream_sockets=user_data_stream_socket,
         user_data_stream_socket_bundles=user_data_stream_socket_bundles,
