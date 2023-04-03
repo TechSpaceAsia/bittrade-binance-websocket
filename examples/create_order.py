@@ -55,7 +55,7 @@ def add_keys(x):
 framework = get_framework(
     user_stream_signer_http=user_stream_signer_factory(key),
     spot_trade_signer=add_keys,
-    spot_trade_signer_http=sign_request_factory(key, secret),
+    trade_signer_http=sign_request_factory(key, secret),
     load_markets=False,
 )
 # framework.spot_trade_socket_messages.subscribe(print, print, print)
@@ -72,12 +72,12 @@ framework = get_framework(
 # r = framework.margin_query_margin_fee_data_http("BTCUSDT", True).run()
 
 order_request = PlaceOrderRequest(
-    symbol="BTCUSDT",
+    symbol="BTCTUSD",
     side=OrderSide.BUY,
     type=OrderType.LIMIT_MAKER,
     timeInForce=None,
-    quantity="0.001",
-    price="27000",
+    quantity="0.01",
+    price="28797",
     newOrderRespType=OrderResponseType.FULL,
     quoteOrderQty=None,
     stopPrice=None,
@@ -87,7 +87,7 @@ order_request = PlaceOrderRequest(
     is_margin=True,
 )
 
-bundles, sockets, messages = framework.isolated_websockets_factory("BTCUSDT")
+bundles, sockets, messages = framework.isolated_margin_user_stream_factory("BTCTUSD")
 
 ready = sockets.pipe(
     operators.filter(lambda x: x is not None), operators.take(1), operators.share()

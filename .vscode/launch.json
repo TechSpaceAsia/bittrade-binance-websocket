@@ -38,7 +38,7 @@
             "module": "examples.user_stream",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local"
+                "CONFIG_PATH": "./config_local/BTC_Bot_01"
             }
         },
         {
@@ -48,7 +48,7 @@
             "module": "examples.create_order",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local"
+                "CONFIG_PATH": "./config_local/BTC_Bot_01"
             }
         }
     ]

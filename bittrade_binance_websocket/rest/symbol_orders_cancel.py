@@ -13,8 +13,10 @@ from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
 def delete_symbol_order_http_factory(params: order.SymbolOrdersCancelRequest):
     return request.RequestMessage(
         method="DELETE",
-        endpoint=endpoints.BinanceEndpoints.SYMBOL_ORDERS_CANCEL,
-        params={"symbol": params.symbol, "recvWindow": params.recvWindow},
+        endpoint=endpoints.BinanceEndpoints.MARGIN_OPEN_ORDERS
+        if params.is_margin
+        else endpoints.BinanceEndpoints.SPOT_OPEN_ORDERS,
+        params=params.to_dict(),
     )
 
 
