@@ -75,13 +75,11 @@ def add_order(
 
         # TODO we need to change this to not expect users to pass the key and secret and instead pass a signer function
         # TODO we need to move this to be on the websocket's prepare_request method
-        sign = get_signature(socket.secret)
-        request_dict = dataclasses.asdict(request)
+        request_dict = request.to_dict()
         request_dict["apiKey"] = socket.key
         request_dict["timestamp"] = timestamp
 
-        signature = pipe(request_dict, to_sorted_qs, encode_query_string, sign)
-        order_params = OrderRequest(**request_dict, signature=signature)
+        order_params = OrderRequest(**request_dict)
 
         order_request = {
             "id": request_id,

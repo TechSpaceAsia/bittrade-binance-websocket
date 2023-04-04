@@ -112,18 +112,16 @@ def cancel_order(
                 "cancel order request requires orderId or origClientOrderId to be filled."
             )
 
-        sign = get_signature(socket.secret)
         request_dict = request.to_dict()
         request_dict["apiKey"] = socket.key
         request_dict["timestamp"] = timestamp
 
-        signature = pipe(request_dict, to_sorted_qs, encode_query_string, sign)
-        order_params = CancelOrderRequest(**request_dict, signature=signature)
+        order_params = CancelOrderRequest(**request_dict)
 
         order_request = {
             "id": request_id,
             "method": "order.cancel",
-            "params": dataclasses.asdict(order_params),
+            "params": order_params.to_dict(),
         }
         logger.info(f"cancel order request, {order_request}")
 

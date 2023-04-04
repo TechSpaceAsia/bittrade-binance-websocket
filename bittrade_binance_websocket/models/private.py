@@ -7,5 +7,4 @@ class APIKeyPrivateRequest:
 
 @dataclasses.dataclass
 class PrivateRequest(APIKeyPrivateRequest):
-  signature: str
   timestamp: str
