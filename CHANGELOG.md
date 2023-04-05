@@ -1,5 +1,6 @@
-# 0.1.24
+# 0.1.2
 
-## Breaking
+## Added
 
-- `create_order` revamp: it expects a OrderCreateRequest object instead of arguments. client_order_id is mandatory.
+- Ability to create orders for margin/isolated by using the same REST function as Spot.
+
