@@ -73,8 +73,19 @@ class PlaceOrderRequest:
     def to_dict(self):
         as_dict = dataclasses.asdict(self)
         del as_dict["is_margin"]
-        if not self.is_margin:
+        if self.is_margin:
+            as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
+        else:
             del as_dict["isIsolated"]
+        for key in (
+            "newOrderRespType",
+            "selfTradePreventionMode",
+            "side",
+            "type",
+            "timeInForce",
+        ):
+            if enum_value := getattr(self, key, None):
+                as_dict[key] = enum_value.value
         return as_dict
 
 
