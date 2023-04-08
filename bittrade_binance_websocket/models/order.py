@@ -131,6 +131,8 @@ class OrderCancelRequest:
         del as_dict["is_margin"]
         if self.is_margin:
             as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
+        else:
+            del as_dict["isIsolated"]
         return as_dict
 
 
@@ -146,6 +148,8 @@ class SymbolOrdersCancelRequest:
         del as_dict["is_margin"]
         if self.is_margin:
             as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
+        else:
+            del as_dict["isIsolated"]
         return as_dict
 
 
