@@ -153,18 +153,6 @@ class SymbolOrdersCancelRequest:
         return as_dict
 
 
-@dataclasses.dataclass
-class MarginSymbolOrdersRequest:
-    symbol: str
-    isIsolated: bool = False
-    recvWindow: Optional[int] = None
-
-    def to_dict(self):
-        as_dict = dataclasses.asdict(self)
-        as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
-        return as_dict
-
-
 class UserDataStreamOrder(TypedDict):
     E: int  # Event time
     s: str  # Symbol

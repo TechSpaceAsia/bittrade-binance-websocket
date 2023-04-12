@@ -17,7 +17,6 @@ from bittrade_binance_websocket.models.order import (
     OrderResponseType,
     OrderSide,
     OrderTimeInForceType,
-    MarginSymbolOrdersRequest,
     OrderType,
     PlaceOrderRequest,
     PlaceOrderResponse,
@@ -68,10 +67,6 @@ framework = get_framework(
 # framework.spot_current_open_orders_http(SymbolOrdersCancelRequest("BTCUSDT")).subscribe(
 #     print, print, print
 # )
-# framework.margin_current_open_orders_http(
-#     MarginSymbolOrdersRequest(symbol="BTCUSDT", isIsolated=True)
-# ).subscribe(print, print, print)
-# r = framework.margin_query_margin_fee_data_http("BTCUSDT", True).run()
 
 order_request = PlaceOrderRequest(
     symbol="BTCTUSD",

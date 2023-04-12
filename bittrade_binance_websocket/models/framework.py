@@ -19,7 +19,6 @@ from bittrade_binance_websocket.models.order import (
     SymbolOrdersCancelRequest,
     PlaceOrderRequest,
     PlaceOrderResponse,
-    MarginSymbolOrdersRequest,
     SymbolOrderResponseItem,
 )
 
