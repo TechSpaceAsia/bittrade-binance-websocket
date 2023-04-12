@@ -67,6 +67,9 @@ class FrameworkContext:
     user_data_stream_sockets: Observable[models.EnhancedWebsocket]
     user_data_stream_socket_bundles: ConnectableObservable[models.WebsocketBundle]
     user_data_stream_messages: Observable[UserFeedMessage]
+    public_stream_bundles: ConnectableObservable[models.WebsocketBundle]
+    public_stream_sockets: Observable[models.EnhancedWebsocket]
+    public_stream_socket_messages: Observable[UserFeedMessage]
     isolated_margin_user_stream_factory: Callable[
         [str],
         tuple[
