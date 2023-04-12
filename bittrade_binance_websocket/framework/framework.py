@@ -10,6 +10,7 @@ from reactivex.scheduler import ThreadPoolScheduler
 from reactivex.subject import BehaviorSubject
 
 from bittrade_binance_websocket import models
+from bittrade_binance_websocket.connection.public_stream import public_websocket_connection
 from bittrade_binance_websocket.connection.private import private_websocket_connection
 from bittrade_binance_websocket.connection.private_user_stream import (
     private_websocket_user_stream,
@@ -91,6 +92,16 @@ def get_framework(
         isolated_margin_delete_listen_key_http_factory(user_stream_signer_http)
     )
 
+    # Setup up public stream
+    public_stream_bundles = public_websocket_connection()
+    public_stream_sockets = public_stream_bundles.pipe(
+        connection_operators.keep_new_socket_only(),
+        operators.share(),
+    )
+    public_stream_socket_messages = public_stream_bundles.pipe(
+        connection_operators.keep_messages_only(), operators.share()
+    )
+
     # Set up sockets
     user_data_stream_socket_bundles = private_websocket_user_stream(
         get_listen_key_http, keep_alive_listen_key_http
@@ -169,5 +180,8 @@ def get_framework(
         user_data_stream_messages=user_data_stream_messages,
         user_data_stream_sockets=user_data_stream_socket,
         user_data_stream_socket_bundles=user_data_stream_socket_bundles,
+        public_stream_bundles=public_stream_bundles,
+        public_stream_sockets=public_stream_sockets,
+        public_stream_socket_messages=public_stream_socket_messages,
         scheduler=pool_scheduler,
     )
