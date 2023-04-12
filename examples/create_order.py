@@ -23,12 +23,14 @@ from bittrade_binance_websocket.models.order import (
     PlaceOrderResponse,
     SymbolOrdersCancelRequest,
 )
+from bittrade_binance_websocket.models.loan import AccountBorrowRequest
 from bittrade_binance_websocket.models.response_message import ResponseMessage
 from IPython.terminal import embed
 
 from bittrade_binance_websocket.rest.symbol_orders_cancel import (
     accept_empty_orders_list,
 )
+from bittrade_binance_websocket.rest.margin_loan import account_borrow_http_factory
 from bittrade_binance_websocket.sign import sign_request_factory
 
 
