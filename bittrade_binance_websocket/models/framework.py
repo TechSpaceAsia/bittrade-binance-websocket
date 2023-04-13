@@ -14,6 +14,7 @@ from bittrade_binance_websocket.models.response_message import SpotResponseMessa
 from bittrade_binance_websocket.models.rest import margin_account
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
 from bittrade_binance_websocket.models.rest.symbol_price_ticker import SymbolPriceTicker
+from bittrade_binance_websocket.models.trade import TradeDataRequest, TradeDict
 from bittrade_binance_websocket.models.order import (
     OrderCancelRequest,
     SymbolOrdersCancelRequest,
@@ -49,6 +50,8 @@ class FrameworkContext:
     spot_order_cancel: Callable[[OrderCancelRequest], Observable[dict]]
     order_create_http: Callable[[PlaceOrderRequest], Observable[PlaceOrderResponse]]
     order_cancel_http: Callable[[OrderCancelRequest], Observable[dict]]
+    order_cancel_http: Callable[[OrderCancelRequest], Observable[dict]]
+    trade_list_http: Callable[[TradeDataRequest], Observable[list[TradeDict]]]
     margin_account_borrow_http: Callable[[AccountBorrowRequest], Observable[dict]]
     margin_account_repay_http: Callable[[AccountBorrowRequest], Observable[dict]]
     spot_symbol_orders_cancel: Callable[

@@ -1,4 +1,11 @@
-# 0.1.3
+# 0.1.8
+
+## Added
+
+- List of trades http request
+
+
+# 0.1.4
 
 ## Added
 

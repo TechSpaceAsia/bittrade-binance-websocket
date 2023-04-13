@@ -24,6 +24,7 @@ from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_facto
 from bittrade_binance_websocket.rest.query_margin_account import (
     query_margin_account_details_http_factory,
 )
+from bittrade_binance_websocket.rest.trade_list import account_trade_list_http_factory
 from bittrade_binance_websocket.rest.query_margin_fee_data import (
     query_margin_fee_data_http_factory,
 )
@@ -175,6 +176,7 @@ def get_framework(
         spot_symbol_orders_cancel=spot_symbol_orders_cancel,
         order_create_http=create_order_http_factory(trade_signer_http),
         order_cancel_http=cancel_order_http_factory(trade_signer_http),
+        trade_list_http=account_trade_list_http_factory(trade_signer_http),
         symbol_orders_cancel_http=symbol_orders_cancel_http,
         current_open_orders_http=open_orders_http,
         user_data_stream_messages=user_data_stream_messages,

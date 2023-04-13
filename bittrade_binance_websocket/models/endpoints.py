@@ -11,6 +11,8 @@ class BinanceEndpoints(Enum):
     MARGIN_LOAN = "/sapi/v1/margin/loan"
     MARGIN_REPAY = "/sapi/v1/margin/repay"
     SPOT_ORDER = "/api/v3/order"
+    SPOT_TRADE_LIST = "/api/v3/myTrades"
+    MARGIN_TRADE_LIST = "/sapi/v1/margin/myTrades"
     QUERY_CROSS_MARGIN_ACCOUNT_DETAILS = "/sapi/v1/margin/account"
     QUERY_ISOLATED_MARGIN_ACCOUNT_DETAILS = "/sapi/v1/margin/isolated/account"
     QUERY_ISOLATED_MARGIN_FEE_DATA = "/sapi/v1/margin/isolatedMarginData"

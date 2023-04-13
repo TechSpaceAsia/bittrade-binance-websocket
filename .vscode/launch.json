@@ -50,6 +50,16 @@
             "env": {
                 "CONFIG_PATH": "./config_local/BTC_Bot_07"
             }
+        },
+        {
+            "name": "Examples | Load trades",
+            "type": "python",
+            "request": "launch",
+            "module": "examples.load_trades",
+            "justMyCode": false,
+            "env": {
+                "CONFIG_PATH": "./config_local/BTC_Bot_06"
+            }
         }
     ]
 }
