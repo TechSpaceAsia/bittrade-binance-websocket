@@ -10,7 +10,9 @@ from reactivex.scheduler import ThreadPoolScheduler
 from reactivex.subject import BehaviorSubject
 
 from bittrade_binance_websocket import models
-from bittrade_binance_websocket.connection.public_stream import public_websocket_connection
+from bittrade_binance_websocket.connection.public_stream import (
+    public_websocket_connection,
+)
 from bittrade_binance_websocket.connection.private import private_websocket_connection
 from bittrade_binance_websocket.connection.private_user_stream import (
     private_websocket_user_stream,
@@ -19,6 +21,9 @@ from bittrade_binance_websocket.events.add_order import create_order_factory
 from bittrade_binance_websocket.events.cancel_order import (
     cancel_order_factory,
     cancel_symbol_orders_factory,
+)
+from bittrade_binance_websocket.rest.account_information import (
+    get_account_information_http_factory,
 )
 from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
 from bittrade_binance_websocket.rest.query_margin_account import (
@@ -79,6 +84,9 @@ def get_framework(
     # Rest
     get_active_listen_key_http = get_active_listen_key_http_factory(
         user_stream_signer_http
+    )
+    get_account_information_http = get_account_information_http_factory(
+        trade_signer_http
     )
     get_listen_key_http = get_listen_key_http_factory(user_stream_signer_http)
     keep_alive_listen_key_http = ping_listen_key_http_factory(user_stream_signer_http)
@@ -157,6 +165,7 @@ def get_framework(
         all_subscriptions=all_subscriptions,
         exchange=exchange,
         delete_listen_key_http=delete_listen_key_http,
+        get_account_information_http=get_account_information_http,
         get_active_listen_key_http=get_active_listen_key_http,
         get_listen_key_http=get_listen_key_http,
         isolated_margin_get_listen_key_http=isolated_margin_get_listen_key_http,

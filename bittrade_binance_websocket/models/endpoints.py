@@ -1,8 +1,10 @@
 from enum import Enum
 
 
+# https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md
 class BinanceEndpoints(Enum):
     SPOT_OPEN_ORDERS = "/api/v3/openOrders"
+    ACCOUNT_INFORMATION = "/api/v3/account"
     GET_TIME = "/api/v3/time"
     ISOLATED_MARGIN_LISTEN_KEY = "/sapi/v1/userDataStream/isolated"
     LISTEN_KEY = "/api/v3/userDataStream"

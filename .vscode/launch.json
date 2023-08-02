@@ -58,7 +58,7 @@
             "module": "examples.load_trades",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/BTC_Bot_06"
+                "CONFIG_PATH": "./config_local/BTC_Bot_01"
             }
         }
     ]

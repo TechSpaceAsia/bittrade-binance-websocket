@@ -34,6 +34,7 @@ class FrameworkContext:
     all_subscriptions: CompositeDisposable
     exchange: binance
     get_active_listen_key_http: Callable[[], Observable[CreateListenKeyResponse]]
+    get_account_information_http: Callable[[], Observable[dict]]
     get_listen_key_http: Callable[[], Observable[CreateListenKeyResponse]]
     isolated_margin_get_listen_key_http: Callable[
         [str], Observable[CreateListenKeyResponse]
