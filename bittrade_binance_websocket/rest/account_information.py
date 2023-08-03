@@ -10,8 +10,10 @@ from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
 
 
 @http_factory(dict)
-def get_account_information_http_factory():
+def get_account_information_http_factory(isolated: bool = False):
     return request.RequestMessage(
         method="GET",
-        endpoint=endpoints.BinanceEndpoints.ACCOUNT_INFORMATION,
+        endpoint=endpoints.BinanceEndpoints.MARGIN_ACCOUNT_INFORMATION
+        if isolated
+        else endpoints.BinanceEndpoints.ACCOUNT_INFORMATION,
     )
