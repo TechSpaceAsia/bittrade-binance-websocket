@@ -45,6 +45,9 @@ from bittrade_binance_websocket.rest.current_open_orders import (
 from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsocket
 from bittrade_binance_websocket.models.framework import FrameworkContext
 from bittrade_binance_websocket.rest.symbol_price_ticker import symbol_price_ticker_http
+from bittrade_binance_websocket.rest.symbol_price_book_ticker import (
+    symbol_price_book_ticker_http,
+)
 from bittrade_binance_websocket.rest.listen_key import (
     delete_listen_key_http_factory,
     get_active_listen_key_http_factory,
@@ -172,6 +175,7 @@ def get_framework(
         isolated_margin_user_stream_factory=isolated_margin_user_stream_factory,
         keep_alive_listen_key_http=keep_alive_listen_key_http,
         market_symbol_price_ticker_http=symbol_price_ticker_http,
+        market_symbol_price_book_ticker_http=symbol_price_book_ticker_http,
         margin_query_cross_margin_account_details_http=query_cross_margin_account_details_http,
         margin_query_margin_fee_data_http=query_margin_fee_data_http,
         margin_account_borrow_http=account_borrow_http_factory(trade_signer_http),

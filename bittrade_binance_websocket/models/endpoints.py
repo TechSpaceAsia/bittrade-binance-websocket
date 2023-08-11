@@ -20,3 +20,4 @@ class BinanceEndpoints(Enum):
     QUERY_ISOLATED_MARGIN_FEE_DATA = "/sapi/v1/margin/isolatedMarginData"
     QUERY_CROSS_MARGIN_FEE_DATA = "/sapi/v1/margin/crossMarginData"
     SYMBOL_PRICE_TICKER = "/api/v3/ticker/price"
+    SYMBOL_BOOK_TICKER = "/api/v3/ticker/bookTicker"

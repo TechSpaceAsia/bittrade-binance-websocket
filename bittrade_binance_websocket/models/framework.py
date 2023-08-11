@@ -14,6 +14,9 @@ from bittrade_binance_websocket.models.response_message import SpotResponseMessa
 from bittrade_binance_websocket.models.rest import margin_account
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
 from bittrade_binance_websocket.models.rest.symbol_price_ticker import SymbolPriceTicker
+from bittrade_binance_websocket.models.rest.symbol_price_book_ticker import (
+    SymbolPriceBookTicker,
+)
 from bittrade_binance_websocket.models.trade import TradeDataRequest, TradeDict
 from bittrade_binance_websocket.models.order import (
     OrderCancelRequest,
@@ -42,6 +45,9 @@ class FrameworkContext:
     delete_listen_key_http: Callable[[str], Observable[None]]
     keep_alive_listen_key_http: Callable[[str], Observable[None]]
     market_symbol_price_ticker_http: Callable[[str], Observable[SymbolPriceTicker]]
+    market_symbol_price_book_ticker_http: Callable[
+        [str], Observable[SymbolPriceBookTicker]
+    ]
     scheduler: ThreadPoolScheduler
     spot_trade_socket_bundles: ConnectableObservable[models.WebsocketBundle]
     spot_trade_socket_messages: Observable[dict]

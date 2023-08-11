@@ -1,3 +1,10 @@
+# 0.1.10
+
+## Added
+
+- Symbol book ticker
+
+
 # 0.1.8
 
 ## Added
