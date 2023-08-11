@@ -68,21 +68,21 @@ framework = get_framework(
 #     print, print, print
 # )
 
-order_request = PlaceOrderRequest(
-    symbol="BTCTUSD",
-    side=OrderSide.BUY,
-    type=OrderType.LIMIT_MAKER,
-    timeInForce=None,
-    quantity="0.005",
-    price="28050",
-    newOrderRespType=OrderResponseType.FULL,
-    quoteOrderQty=None,
-    stopPrice=None,
-    trailingDelta=None,
-    newClientOrderId=str(uuid4()),
-    isIsolated=True,
-    is_margin=True,
-)
+# order_request = PlaceOrderRequest(
+#     symbol="BTCTUSD",
+#     side=OrderSide.BUY,
+#     type=OrderType.LIMIT_MAKER,
+#     timeInForce=None,
+#     quantity="0.005",
+#     price="28050",
+#     newOrderRespType=OrderResponseType.FULL,
+#     quoteOrderQty=None,
+#     stopPrice=None,
+#     trailingDelta=None,
+#     newClientOrderId=str(uuid4()),
+#     isIsolated=True,
+#     is_margin=True,
+# )
 
 bundles, sockets, messages = framework.isolated_margin_user_stream_factory("BTCTUSD")
 
