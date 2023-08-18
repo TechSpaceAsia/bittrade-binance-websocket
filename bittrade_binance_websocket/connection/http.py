@@ -73,7 +73,8 @@ def send_request(request: requests.models.Request) -> reactivex.Observable:
                     if request.method == "POST"
                     else response.request.headers,
                 )
-                if response.text:
+                # Binance returns 400 with a message in the body
+                if response.status_code == 400 and response.text:
                     observer.on_error(Exception(response.text))
                 else:
                     response.raise_for_status()

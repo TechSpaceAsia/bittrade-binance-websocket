@@ -1,3 +1,8 @@
+# 0.2.1
+
+## Added
+
+- Raise API's text when available
 # 0.2.0
 
 ## Added
