@@ -61,6 +61,7 @@ from bittrade_binance_websocket.rest.listen_key import (
 from bittrade_binance_websocket.rest.margin_loan import (
     account_borrow_http_factory,
     account_repay_http_factory,
+    max_borrowable_http_factory,
 )
 
 logger = getLogger(__name__)
@@ -180,6 +181,7 @@ def get_framework(
         margin_query_margin_fee_data_http=query_margin_fee_data_http,
         margin_account_borrow_http=account_borrow_http_factory(trade_signer_http),
         margin_account_repay_http=account_repay_http_factory(trade_signer_http),
+        margin_max_borrowable_http=max_borrowable_http_factory(trade_signer_http),
         spot_trade_socket_bundles=spot_trade_socket_bundles,
         spot_trade_socket_messages=spot_trade_socket_messages,
         spot_trade_sockets=spot_trade_sockets,

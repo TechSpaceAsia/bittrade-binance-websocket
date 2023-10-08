@@ -27,3 +27,14 @@ def account_repay_http_factory(
         endpoint=endpoints.BinanceEndpoints.MARGIN_REPAY,
         params=params.to_dict(),
     )
+
+
+@http_factory(loan.MaxBorrowableRequest)
+def max_borrowable_http_factory(
+    params: loan.MaxBorrowableRequest,
+):
+    return request.RequestMessage(
+        method="GET",
+        endpoint=endpoints.BinanceEndpoints.MARGIN_MAX_BORROWABLE,
+        params=params.to_dict(),
+    )

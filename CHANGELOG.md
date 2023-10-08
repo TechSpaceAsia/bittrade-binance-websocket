@@ -1,3 +1,9 @@
+# 0.2.4
+
+## Added
+
+- Max Borrowable API
+
 # 0.2.2
 
 ## Added

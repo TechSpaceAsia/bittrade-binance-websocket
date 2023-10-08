@@ -9,7 +9,10 @@ from reactivex.disposable import CompositeDisposable
 from reactivex.scheduler import ThreadPoolScheduler
 from elm_framework_helpers.websockets import models
 from bittrade_binance_websocket.models import UserFeedMessage
-from bittrade_binance_websocket.models.loan import AccountBorrowRequest
+from bittrade_binance_websocket.models.loan import (
+    AccountBorrowRequest,
+    MaxBorrowableRequest,
+)
 from bittrade_binance_websocket.models.response_message import SpotResponseMessage
 from bittrade_binance_websocket.models.rest import margin_account
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
@@ -61,6 +64,7 @@ class FrameworkContext:
     trade_list_http: Callable[[TradeDataRequest], Observable[list[TradeDict]]]
     margin_account_borrow_http: Callable[[AccountBorrowRequest], Observable[dict]]
     margin_account_repay_http: Callable[[AccountBorrowRequest], Observable[dict]]
+    margin_max_borrowable_http: Callable[[MaxBorrowableRequest], Observable[dict]]
     spot_symbol_orders_cancel: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
     ]

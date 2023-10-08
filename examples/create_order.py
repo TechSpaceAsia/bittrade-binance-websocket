@@ -22,7 +22,10 @@ from bittrade_binance_websocket.models.order import (
     PlaceOrderResponse,
     SymbolOrdersCancelRequest,
 )
-from bittrade_binance_websocket.models.loan import AccountBorrowRequest
+from bittrade_binance_websocket.models.loan import (
+    AccountBorrowRequest,
+    MaxBorrowableRequest,
+)
 from bittrade_binance_websocket.models.response_message import ResponseMessage
 from IPython.terminal import embed
 
@@ -59,6 +62,10 @@ framework = get_framework(
     trade_signer_http=sign_request_factory(key, secret),
     load_markets=False,
 )
+r = MaxBorrowableRequest(asset="FDUSD")
+print(framework.margin_max_borrowable_http(r).run())
+r = MaxBorrowableRequest(asset="FDUSD", isolated_symbol="FDUSDUSDT")
+print(framework.margin_max_borrowable_http(r).run())
 # framework.spot_trade_socket_messages.subscribe(print, print, print)
 # framework.spot_symbol_orders_cancel_http(
 #     SymbolOrdersCancelRequest(symbol="BTCUSDT")

@@ -10,6 +10,7 @@ class BinanceEndpoints(Enum):
     LISTEN_KEY = "/api/v3/userDataStream"
     MARGIN_OPEN_ORDERS = "/sapi/v1/margin/openOrders"
     MARGIN_ORDER = "/sapi/v1/margin/order"
+    MARGIN_MAX_BORROWABLE = "/sapi/v1/margin/maxBorrowable"
     MARGIN_ACCOUNT_INFORMATION = "/sapi/v1/margin/isolated/account"
     MARGIN_LOAN = "/sapi/v1/margin/loan"
     MARGIN_REPAY = "/sapi/v1/margin/repay"
