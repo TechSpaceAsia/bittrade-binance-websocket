@@ -26,6 +26,7 @@ class MaxBorrowableRequest:
 
     def to_dict(self):
         as_dict = dataclasses.asdict(self)
-        if not self.isolated_symbol:
-            del as_dict["isolated_symbol"]
+        del as_dict["isolated_symbol"]
+        if self.isolated_symbol:
+            as_dict["isolatedSymbol"] = self.isolated_symbol
         return as_dict

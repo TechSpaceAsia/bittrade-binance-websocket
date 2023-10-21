@@ -75,29 +75,29 @@ print(framework.margin_max_borrowable_http(r).run())
 #     print, print, print
 # )
 
-# order_request = PlaceOrderRequest(
-#     symbol="BTCTUSD",
-#     side=OrderSide.BUY,
-#     type=OrderType.LIMIT_MAKER,
-#     timeInForce=None,
-#     quantity="0.005",
-#     price="28050",
-#     newOrderRespType=OrderResponseType.FULL,
-#     quoteOrderQty=None,
-#     stopPrice=None,
-#     trailingDelta=None,
-#     newClientOrderId=str(uuid4()),
-#     isIsolated=True,
-#     is_margin=True,
-# )
-
-bundles, sockets, messages = framework.isolated_margin_user_stream_factory("BTCTUSD")
-
-ready = sockets.pipe(
-    operators.filter(lambda x: x is not None), operators.take(1), operators.share()
+order_request = PlaceOrderRequest(
+    symbol="USDCUSDT",
+    side=OrderSide.BUY,
+    type=OrderType.LIMIT_MAKER,
+    timeInForce=OrderTimeInForceType.GTC,
+    quantity="10",
+    price="0.9998",
+    newOrderRespType=OrderResponseType.FULL,
+    quoteOrderQty=None,
+    stopPrice=None,
+    trailingDelta=None,
+    newClientOrderId=str(uuid4()),
+    isIsolated=True,
+    is_margin=True,
 )
-ready.subscribe(debug_observer("READY", logger_name))
-messages.subscribe(debug_observer("MESSAGE", logger_name))
+
+# bundles, sockets, messages = framework.isolated_margin_user_stream_factory("BTCTUSD")
+
+# ready = sockets.pipe(
+#     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
+# )
+# ready.subscribe(debug_observer("READY", logger_name))
+# messages.subscribe(debug_observer("MESSAGE", logger_name))
 # ready = framework.spot_trade_guaranteed_sockets.pipe(
 #     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
 # )
@@ -110,11 +110,11 @@ messages.subscribe(debug_observer("MESSAGE", logger_name))
 # )
 
 
-sub = bundles.connect()
+# sub = bundles.connect()
 
 # Can be triggered manually or part of a concat with ready etc
 # framework.spot_order_create(order_request).subscribe(print, print, print)
 
 embed.embed()
 
-sub.dispose()
+# sub.dispose()
