@@ -38,3 +38,27 @@ def max_borrowable_http_factory(
         endpoint=endpoints.BinanceEndpoints.MARGIN_MAX_BORROWABLE,
         params=params.to_dict(),
     )
+
+@http_factory(list[loan.FutureInterestRate])
+def future_hourly_interest_rate_http_factory(assets: list[str], is_isolated=False):
+    return request.RequestMessage(
+        method="GET",
+        endpoint=endpoints.BinanceEndpoints.MARGIN_FUTURE_INTEREST_RATE,
+        params={
+            "assets": ",".join(assets),
+            "isIsolated": "TRUE" if is_isolated else "FALSE"
+        },
+    )
+
+@http_factory(list[loan.FutureInterestRate])
+def interest_history_http_factory(assets: list[str], is_isolated=False, size=100):
+    # TODO this is a paginated endpoint, we should allow for that
+    return request.RequestMessage(
+        method="GET",
+        endpoint=endpoints.BinanceEndpoints.MARGIN_INTEREST_HISTORY,
+        params={
+            "assets": ",".join(assets),
+            "isIsolated": "TRUE" if is_isolated else "FALSE",
+            "size": size
+        },
+    )

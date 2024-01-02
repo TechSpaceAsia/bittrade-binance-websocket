@@ -1,3 +1,10 @@
+# 0.2.6
+
+## Added
+
+- Hourly future interest API
+- Interest history API
+
 # 0.2.4
 
 ## Added

@@ -65,6 +65,8 @@ class FrameworkContext:
     margin_account_borrow_http: Callable[[AccountBorrowRequest], Observable[dict]]
     margin_account_repay_http: Callable[[AccountBorrowRequest], Observable[dict]]
     margin_max_borrowable_http: Callable[[MaxBorrowableRequest], Observable[dict]]
+    margin_interest_history_http: Callable[[list[str], bool, int], Observable[dict]]
+    margin_future_hourly_interest_rate_http: Callable[[list[str], bool], Observable[list[dict]]]
     spot_symbol_orders_cancel: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
     ]

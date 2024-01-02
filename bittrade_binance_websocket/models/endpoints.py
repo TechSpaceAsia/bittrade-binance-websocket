@@ -14,6 +14,8 @@ class BinanceEndpoints(Enum):
     MARGIN_ACCOUNT_INFORMATION = "/sapi/v1/margin/isolated/account"
     MARGIN_LOAN = "/sapi/v1/margin/loan"
     MARGIN_REPAY = "/sapi/v1/margin/repay"
+    MARGIN_FUTURE_INTEREST_RATE = "/sapi/v1/margin/next-hourly-interest-rate"
+    MARGIN_INTEREST_HISTORY = "/sapi/v1/margin/interestHistory"
     SPOT_ORDER = "/api/v3/order"
     SPOT_TRADE_LIST = "/api/v3/myTrades"
     MARGIN_TRADE_LIST = "/sapi/v1/margin/myTrades"
