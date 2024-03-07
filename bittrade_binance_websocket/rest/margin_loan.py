@@ -7,6 +7,16 @@ from bittrade_binance_websocket.models import loan
 from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
 
 
+@http_factory(Any)
+def available_inventory_http_factory(
+    is_isolated: Optional[bool] = False,
+):
+    return request.RequestMessage(
+        method="GET",
+        endpoint=endpoints.BinanceEndpoints.MARGIN_AVAILABLE_INVENTORY,
+        params={"type": "MARGIN" if not is_isolated else "ISOLATED"},
+    )
+
 @http_factory(loan.AccountBorrowRequest)
 def account_borrow_http_factory(
     params: loan.AccountBorrowRequest,

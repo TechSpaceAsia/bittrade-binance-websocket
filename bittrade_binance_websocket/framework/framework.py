@@ -26,6 +26,7 @@ from bittrade_binance_websocket.rest.account_information import (
     get_account_information_http_factory,
 )
 from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
+from bittrade_binance_websocket.rest.margin_portfolio import portfolio_margin_account_info_http_factory
 from bittrade_binance_websocket.rest.query_margin_account import (
     query_margin_account_details_http_factory,
 )
@@ -64,6 +65,7 @@ from bittrade_binance_websocket.rest.margin_loan import (
     future_hourly_interest_rate_http_factory,
     interest_history_http_factory,
     max_borrowable_http_factory,
+    available_inventory_http_factory,
 )
 
 logger = getLogger(__name__)
@@ -166,6 +168,7 @@ def get_framework(
         trade_signer_http
     )
     query_margin_fee_data_http = query_margin_fee_data_http_factory(trade_signer_http)
+    available_inventory_http = available_inventory_http_factory(trade_signer_http)
 
     return FrameworkContext(
         all_subscriptions=all_subscriptions,
@@ -184,9 +187,11 @@ def get_framework(
         margin_account_borrow_http=account_borrow_http_factory(trade_signer_http),
         margin_account_repay_http=account_repay_http_factory(trade_signer_http),
         margin_max_borrowable_http=max_borrowable_http_factory(trade_signer_http),
+        margin_portfolio_account_information=portfolio_margin_account_info_http_factory(trade_signer_http),
         margin_interest_history_http=interest_history_http_factory(trade_signer_http),margin_future_hourly_interest_rate_http=future_hourly_interest_rate_http_factory(
             trade_signer_http
         ),
+        available_inventory_http=available_inventory_http,
         spot_trade_socket_bundles=spot_trade_socket_bundles,
         spot_trade_socket_messages=spot_trade_socket_messages,
         spot_trade_sockets=spot_trade_sockets,

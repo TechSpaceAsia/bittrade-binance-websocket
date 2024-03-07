@@ -1,3 +1,9 @@
+# 0.2.7
+
+## Added
+
+- Margin available inventory
+
 # 0.2.6
 
 ## Added

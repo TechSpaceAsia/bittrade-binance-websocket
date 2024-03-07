@@ -9,6 +9,7 @@ from reactivex.disposable import CompositeDisposable
 from reactivex.scheduler import ThreadPoolScheduler
 from elm_framework_helpers.websockets import models
 from bittrade_binance_websocket.models import UserFeedMessage
+from bittrade_binance_websocket.models.portfolio import PortfolioMarginAccountInfo
 from bittrade_binance_websocket.models.loan import (
     AccountBorrowRequest,
     MaxBorrowableRequest,
@@ -64,6 +65,8 @@ class FrameworkContext:
     trade_list_http: Callable[[TradeDataRequest], Observable[list[TradeDict]]]
     margin_account_borrow_http: Callable[[AccountBorrowRequest], Observable[dict]]
     margin_account_repay_http: Callable[[AccountBorrowRequest], Observable[dict]]
+    margin_portfolio_account_information: Callable[[], Observable[PortfolioMarginAccountInfo]]
+    available_inventory_http: Callable[[bool], Observable[dict]]
     margin_max_borrowable_http: Callable[[MaxBorrowableRequest], Observable[dict]]
     margin_interest_history_http: Callable[[list[str], bool, int], Observable[dict]]
     margin_future_hourly_interest_rate_http: Callable[[list[str], bool], Observable[list[dict]]]
