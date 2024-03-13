@@ -1,3 +1,15 @@
+# 0.3.0
+
+## Changed
+
+- Account information http now also handles cross margin, separately from isolated
+- Margin Listen key can be called with symbol (isolated) or without (cross margin)
+
+### Breaking
+
+- Framework methods renamed from `isolated_margin_XXX_listen_key_http_factory` to `margin_XXX_listen_key_http_factory`
+- Signature of `get_account_information_http` changed to include `is_margin` boolean
+
 # 0.2.7
 
 ## Added

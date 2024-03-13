@@ -41,9 +41,9 @@ class FrameworkContext:
     all_subscriptions: CompositeDisposable
     exchange: binance
     get_active_listen_key_http: Callable[[], Observable[CreateListenKeyResponse]]
-    get_account_information_http: Callable[[bool, list[str] | None], Observable[dict]]
+    get_account_information_http: Callable[[bool, bool, list[str] | None], Observable[dict]]
     get_listen_key_http: Callable[[], Observable[CreateListenKeyResponse]]
-    isolated_margin_get_listen_key_http: Callable[
+    margin_get_listen_key_http: Callable[
         [str], Observable[CreateListenKeyResponse]
     ]
     delete_listen_key_http: Callable[[str], Observable[None]]
@@ -91,8 +91,8 @@ class FrameworkContext:
     public_stream_bundles: ConnectableObservable[models.WebsocketBundle]
     public_stream_sockets: Observable[models.EnhancedWebsocket]
     public_stream_socket_messages: Observable[UserFeedMessage]
-    isolated_margin_user_stream_factory: Callable[
-        [str],
+    margin_user_stream_factory: Callable[
+        [str|None],
         tuple[
             ConnectableObservable[models.WebsocketBundle],
             Observable[models.EnhancedWebsocket],
