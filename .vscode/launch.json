@@ -58,7 +58,7 @@
             "module": "examples.load_trades",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/homeworklinguist"
+                "CONFIG_PATH": "./config_local/main"
             }
         }
     ]

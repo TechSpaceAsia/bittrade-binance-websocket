@@ -25,6 +25,9 @@ from bittrade_binance_websocket.events.cancel_order import (
 from bittrade_binance_websocket.rest.account_information import (
     get_account_information_http_factory,
 )
+from bittrade_binance_websocket.rest.subaccount import (
+    query_subaccount_list_http_factory, query_subaccount_margin_summary_http_factory, subaccount_universal_transfer_http_factory, query_subaccount_margin_detail_http_factory
+)
 from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
 from bittrade_binance_websocket.rest.margin_portfolio import portfolio_margin_account_info_http_factory
 from bittrade_binance_websocket.rest.query_margin_account import (
@@ -104,10 +107,7 @@ def get_framework(
     margin_keep_alive_listen_key_http = (
         margin_ping_listen_key_http_factory(user_stream_signer_http)
     )
-    margin_delete_listen_key_http = (
-        margin_delete_listen_key_http_factory(user_stream_signer_http)
-    )
-
+    
     # Setup up public stream
     public_stream_bundles = public_websocket_connection()
     public_stream_sockets = public_stream_bundles.pipe(
@@ -202,6 +202,10 @@ def get_framework(
         spot_order_create=spot_order_create,
         spot_order_cancel=spot_order_cancel,
         spot_symbol_orders_cancel=spot_symbol_orders_cancel,
+        subaccount_query_list_http=query_subaccount_list_http_factory(trade_signer_http),
+        subaccount_query_margin_summary_http=query_subaccount_margin_summary_http_factory(trade_signer_http),
+        subaccount_query_margin_detail_http=query_subaccount_margin_detail_http_factory(trade_signer_http),
+        subaccount_universal_transfer_http=subaccount_universal_transfer_http_factory(trade_signer_http),
         order_create_http=create_order_http_factory(trade_signer_http),
         order_cancel_http=cancel_order_http_factory(trade_signer_http),
         trade_list_http=account_trade_list_http_factory(trade_signer_http),
