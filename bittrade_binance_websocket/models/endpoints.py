@@ -35,3 +35,5 @@ class BinanceEndpoints(Enum):
     SUBACCOUNT_TRANSFER = "/sapi/v1/sub-account/margin/transfer"
     SUBACCOUNT_UNIVERSAL_TRANSFER = "/sapi/v1/sub-account/universalTransfer"
     SUBACCOUNT_TO_MASTER_TRANSFER = "/sapi/v1/sub-account/transfer/subToMaster"
+    SUBACCOUNT_TO_SUBACCOUNT_TRANSFER = "/sapi/v1/sub-account/transfer/subToSub"
+    USER_UNIVERSAL_TRANSFER = "/sapi/v1/asset/transfer"

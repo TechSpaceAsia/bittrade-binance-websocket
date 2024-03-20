@@ -1,5 +1,5 @@
 from bittrade_binance_websocket.models import endpoints, request
-from bittrade_binance_websocket.models.rest.subaccount import UniversalTransferRequest
+from bittrade_binance_websocket.models.rest.subaccount import UniversalTransferRequest, UserUniversalTransferRequest
 from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
 
 
@@ -17,6 +17,38 @@ def subaccount_universal_transfer_http_factory(r: UniversalTransferRequest):
         method="POST",
         endpoint=endpoints.BinanceEndpoints.SUBACCOUNT_UNIVERSAL_TRANSFER,
         params=r.to_dict(),
+    )
+
+@http_factory(None)  # type: ignore
+def user_universal_transfer_http_factory(r: UserUniversalTransferRequest):
+    return request.RequestMessage(
+        method="POST",
+        endpoint=endpoints.BinanceEndpoints.USER_UNIVERSAL_TRANSFER,
+        params=r.to_dict(),
+    )
+
+
+@http_factory(None)  # type: ignore
+def subaccount_transfer_to_master_http_factory(asset: str, amount: str):
+    return request.RequestMessage(
+        method="POST",
+        endpoint=endpoints.BinanceEndpoints.SUBACCOUNT_TO_MASTER_TRANSFER,
+        params={
+            "asset": asset,
+            "amount": amount,
+        },
+    )
+
+@http_factory(None)  # type: ignore
+def subaccount_transfer_to_subaccount_http_factory(to_account: str, asset: str, amount: str):
+    return request.RequestMessage(
+        method="POST",
+        endpoint=endpoints.BinanceEndpoints.SUBACCOUNT_TO_SUBACCOUNT_TRANSFER,
+        params={
+            "toEmail": to_account,
+            "asset": asset,
+            "amount": amount,
+        },
     )
 
 

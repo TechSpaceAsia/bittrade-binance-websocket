@@ -17,7 +17,7 @@ from bittrade_binance_websocket.models.loan import (
 from bittrade_binance_websocket.models.response_message import SpotResponseMessage
 from bittrade_binance_websocket.models.rest import margin_account
 from bittrade_binance_websocket.models.rest.listen_key import CreateListenKeyResponse
-from bittrade_binance_websocket.models.rest.subaccount import UniversalTransferRequest
+from bittrade_binance_websocket.models.rest.subaccount import UniversalTransferRequest, UserUniversalTransferRequest
 from bittrade_binance_websocket.models.rest.symbol_price_ticker import SymbolPriceTicker
 from bittrade_binance_websocket.models.rest.symbol_price_book_ticker import (
     SymbolPriceBookTicker,
@@ -64,6 +64,8 @@ class FrameworkContext:
     subaccount_query_margin_summary_http: Callable[[], Observable[dict]]
     subaccount_query_margin_detail_http: Callable[[str], Observable[dict]]
     subaccount_universal_transfer_http: Callable[[UniversalTransferRequest], Observable[dict]]
+    subaccount_transfer_to_master_http: Callable[[str, str], Observable[dict]]
+    subaccount_transfer_to_subaccount_http: Callable[[str, str, str], Observable[dict]]
     order_create_http: Callable[[PlaceOrderRequest], Observable[PlaceOrderResponse]]
     order_cancel_http: Callable[[OrderCancelRequest], Observable[dict]]
     order_cancel_http: Callable[[OrderCancelRequest], Observable[dict]]
@@ -104,3 +106,4 @@ class FrameworkContext:
             Observable[UserFeedMessage],
         ],
     ]
+    user_universal_transfer_http: Callable[[UserUniversalTransferRequest], Observable[dict]]
