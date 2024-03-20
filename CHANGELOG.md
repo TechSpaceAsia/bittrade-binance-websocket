@@ -1,3 +1,11 @@
+# 0.3.1
+
+## Added
+
+- Subaccount to subaccount transfer
+- User universal transfer
+- Subaccount to master transfer
+
 # 0.3.0
 
 ## Changed
