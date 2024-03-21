@@ -24,10 +24,16 @@ def http_factory(return_type: Type):
             add_token: Callable[[requests.models.Request], requests.models.Request]
         ):
             def inner(*args: P.args, **kwargs: P.kwargs) -> Observable[return_type]:
-                request = fn(*args, **kwargs)
+                def subscribe(observer, scheduler=None):
+                    request = fn(*args, **kwargs)
+                    return http.send_request(
+                        add_token(
+                            http.prepare_request(request)
+                        )
+                    ).subscribe(observer, scheduler)
                 return cast(
                     Observable[return_type],
-                    http.send_request(add_token(http.prepare_request(request))),
+                    Observable(subscribe),
                 )
 
             return inner

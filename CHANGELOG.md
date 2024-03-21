@@ -1,3 +1,7 @@
+# 0.4.0
+
+- Revamp decorator so it only evaluates and signs on subscription
+
 # 0.3.1
 
 ## Added
