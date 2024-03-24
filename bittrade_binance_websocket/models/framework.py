@@ -85,6 +85,9 @@ class FrameworkContext:
     current_open_orders_http: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]
     ]
+    margin_query_max_transfer_out_amount_http: Callable[
+        [str, Optional[str]], Observable[dict]
+    ]
     margin_query_cross_margin_account_details_http: Callable[
         [Optional[bool]], Observable[margin_account.AccountInfo]
     ]

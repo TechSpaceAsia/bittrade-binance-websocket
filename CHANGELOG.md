@@ -1,6 +1,14 @@
+# 0.4.1
+
+## Added
+
+- Margin query max transfer out amount endpoint
+
 # 0.4.0
 
-- Revamp decorator so it only evaluates and signs on subscription
+## Changed
+
+- Revamp decorator so it only evaluates and signs requests on subscription, thus fixing issues with "timestamp out of recvWindow" errors
 
 # 0.3.1
 

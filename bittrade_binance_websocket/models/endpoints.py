@@ -24,6 +24,7 @@ class BinanceEndpoints(Enum):
     QUERY_CROSS_MARGIN_ACCOUNT_DETAILS = "/sapi/v1/margin/account"
     QUERY_ISOLATED_MARGIN_ACCOUNT_DETAILS = "/sapi/v1/margin/isolated/account"
     QUERY_ISOLATED_MARGIN_FEE_DATA = "/sapi/v1/margin/isolatedMarginData"
+    QUERY_MAX_TRANSFER_OUT_AMOUNT = "/sapi/v1/margin/maxTransferable"
     QUERY_MARGIN_PRICE_INDEX = "/sapi/v1/margin/priceIndex"
     QUERY_CROSS_MARGIN_FEE_DATA = "/sapi/v1/margin/crossMarginData"
     SYMBOL_PRICE_TICKER = "/api/v3/ticker/price"

@@ -34,6 +34,9 @@ from bittrade_binance_websocket.rest.margin_portfolio import portfolio_margin_ac
 from bittrade_binance_websocket.rest.query_margin_account import (
     query_margin_account_details_http_factory,
 )
+from bittrade_binance_websocket.rest.query_max_transfer_out_amount import (
+    query_max_transfer_out_amount_http_factory,
+)
 from bittrade_binance_websocket.rest.trade_list import account_trade_list_http_factory
 from bittrade_binance_websocket.rest.query_margin_fee_data import (
     query_margin_fee_data_http_factory,
@@ -188,6 +191,7 @@ def get_framework(
         market_symbol_price_book_ticker_http=symbol_price_book_ticker_http,
         margin_query_cross_margin_account_details_http=query_cross_margin_account_details_http,
         margin_query_margin_fee_data_http=query_margin_fee_data_http,
+        margin_query_max_transfer_out_amount_http=query_max_transfer_out_amount_http_factory(trade_signer_http),
         margin_account_borrow_http=account_borrow_http_factory(trade_signer_http),
         margin_account_repay_http=account_repay_http_factory(trade_signer_http),
         margin_max_borrowable_http=max_borrowable_http_factory(trade_signer_http),
