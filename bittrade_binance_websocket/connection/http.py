@@ -60,8 +60,6 @@ def send_request(request: requests.models.Request) -> reactivex.Observable:
                     "Error parsing request %s; request was %s",
                     response.text,
                     response.request.body
-                    if request.method == "POST"
-                    else response.request.headers,
                 )
                 observer.on_error(exc)
         else:
@@ -70,8 +68,6 @@ def send_request(request: requests.models.Request) -> reactivex.Observable:
                     "Error with request %s; request was %s",
                     response.text,
                     response.request.body
-                    if request.method == "POST"
-                    else response.request.headers,
                 )
                 # Binance returns 400 with a message in the body
                 if response.status_code == 400 and response.text:

@@ -1,3 +1,9 @@
+# 0.4.2
+
+## Changed
+
+- Don't log headers on failure anymore as they may leak API key into logs
+
 # 0.4.1
 
 ## Added
