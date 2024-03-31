@@ -25,6 +25,12 @@ def generate_add_api_key(key: str):
 
     return _add_api_key
 
+class BinanceError(Exception):
+    body: dict = {}
+
+    def __init__(self, message: str, body: dict = {}):
+        super().__init__(message)
+        self.body = body
 
 def prepare_request(message: "RequestMessage") -> requests.models.Request:
     http_method = message.method
@@ -71,7 +77,7 @@ def send_request(request: requests.models.Request) -> reactivex.Observable:
                 )
                 # Binance returns 400 with a message in the body
                 if response.status_code == 400 and response.text:
-                    observer.on_error(Exception(response.text))
+                    observer.on_error(BinanceError(response.text, body=response.json()))
                 else:
                     response.raise_for_status()
             except Exception as exc:

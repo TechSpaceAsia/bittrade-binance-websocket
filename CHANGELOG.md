@@ -1,3 +1,9 @@
+# 0.4.3
+
+## Added
+
+- Errors caught from a `400` response are now raised as a `BinanceError` which contains the body of the error as `exc.body` for easier catch of common issues
+
 # 0.4.2
 
 ## Changed
