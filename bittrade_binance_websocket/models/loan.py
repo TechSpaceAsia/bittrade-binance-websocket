@@ -30,3 +30,8 @@ class MaxBorrowableRequest:
         if self.isolated_symbol:
             as_dict["isolatedSymbol"] = self.isolated_symbol
         return as_dict
+
+
+class FutureInterestRate(TypedDict):
+    asset: str
+    nextHourlyInterestRate: str

@@ -1,3 +1,60 @@
+# 0.4.3
+
+## Added
+
+- Errors caught from a `400` response are now raised as a `BinanceError` which contains the body of the error as `exc.body` for easier catch of common issues
+
+# 0.4.2
+
+## Changed
+
+- Don't log headers on failure anymore as they may leak API key into logs
+
+# 0.4.1
+
+## Added
+
+- Margin query max transfer out amount endpoint
+
+# 0.4.0
+
+## Changed
+
+- Revamp decorator so it only evaluates and signs requests on subscription, thus fixing issues with "timestamp out of recvWindow" errors
+
+# 0.3.1
+
+## Added
+
+- Subaccount to subaccount transfer
+- User universal transfer
+- Subaccount to master transfer
+
+# 0.3.0
+
+## Changed
+
+- Account information http now also handles cross margin, separately from isolated
+- Margin Listen key can be called with symbol (isolated) or without (cross margin)
+
+### Breaking
+
+- Framework methods renamed from `isolated_margin_XXX_listen_key_http_factory` to `margin_XXX_listen_key_http_factory`
+- Signature of `get_account_information_http` changed to include `is_margin` boolean
+
+# 0.2.7
+
+## Added
+
+- Margin available inventory
+
+# 0.2.6
+
+## Added
+
+- Hourly future interest API
+- Interest history API
+
 # 0.2.4
 
 ## Added

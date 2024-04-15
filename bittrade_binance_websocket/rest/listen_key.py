@@ -44,46 +44,51 @@ def delete_listen_key_http_factory(listen_key: str):
 
 
 @http_factory(listen_key.CreateListenKeyResponse)
-def isolated_margin_get_listen_key_http_factory(symbol: str):
+def margin_get_listen_key_http_factory(symbol: str=""):
+    """
+    Get a listen key for the margin account.
+
+    :param symbol: The isolated symbol to get the listen key for. If NOT provided, the listen key will be for the cross margin account.
+    """
+    is_isolated = bool(symbol)  # cross margin takes no symbol argument
+    params = {"symbol": symbol} if is_isolated else {}
     return request.RequestMessage(
         method="POST",
-        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
-        params={
-            "symbol": symbol,
-        },
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY if is_isolated else endpoints.BinanceEndpoints.CROSS_MARGIN_LISTEN_KEY,
+        params=params
     )
 
 
 @http_factory(None)
-def isolated_margin_ping_listen_key_http_factory(listen_key: str, symbol: str):
+def margin_ping_listen_key_http_factory(listen_key: str, symbol: str=""):
+    """
+    Ping the listen key for the margin account.
+
+    :param listen_key: The listen key to ping.
+    :param symbol: The isolated symbol to ping the listen key for. If NOT provided, the listen key will be for the cross margin account.
+    """
+    is_isolated = bool(symbol)  # cross margin takes no symbol argument
+    params = {"listenKey": listen_key} | ({"symbol": symbol} if is_isolated else {})
     return request.RequestMessage(
         method="PUT",
-        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
-        params={
-            "listenKey": listen_key,
-            "symbol": symbol,
-        },
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY if is_isolated else endpoints.BinanceEndpoints.CROSS_MARGIN_LISTEN_KEY,
+        params=params,
     )
 
-
-@http_factory(listen_key.CreateListenKeyResponse)
-def isolated_margin_get_active_listen_key_http_factory(symbol: str):
-    return request.RequestMessage(
-        method="POST",
-        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
-        params={
-            "symbol": symbol,
-        },
-    )
 
 
 @http_factory(None)
-def isolated_margin_delete_listen_key_http_factory(listen_key: str, symbol: str):
+def margin_delete_listen_key_http_factory(listen_key: str, symbol: str=""):
+    """
+    Delete the listen key for the margin account.
+
+    :param listen_key: The listen key to delete.
+    :param symbol: The isolated symbol to delete the listen key for. If NOT provided, the listen key will be for the cross margin account.
+    """
+    is_isolated = bool(symbol)
+    params = {"listenKey": listen_key} | ({"symbol": symbol} if is_isolated else {})
     return request.RequestMessage(
         method="DELETE",
-        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY,
-        params={
-            "listenKey": listen_key,
-            "symbol": symbol,
-        },
+        endpoint=endpoints.BinanceEndpoints.ISOLATED_MARGIN_LISTEN_KEY if is_isolated else endpoints.BinanceEndpoints.CROSS_MARGIN_LISTEN_KEY,
+        params=params,
     )
