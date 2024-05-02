@@ -33,6 +33,7 @@ class BinanceEndpoints(Enum):
     SUBACCOUNT_SUMMARY = "/sapi/v1/sub-account/margin/accountSummary"
     SUBACCOUNT_MARGIN_DETAIL = "/sapi/v1/sub-account/margin/account"
     SUBACCOUNT_ASSETS = "/sapi/v3/sub-account/assets"
+    SUBACCOUNT_ADD_IP_RESTRICTION = "/sapi/v2/sub-account/subAccountApi/ipRestriction"
     SUBACCOUNT_TRANSFER = "/sapi/v1/sub-account/margin/transfer"
     SUBACCOUNT_UNIVERSAL_TRANSFER = "/sapi/v1/sub-account/universalTransfer"
     SUBACCOUNT_TO_MASTER_TRANSFER = "/sapi/v1/sub-account/transfer/subToMaster"

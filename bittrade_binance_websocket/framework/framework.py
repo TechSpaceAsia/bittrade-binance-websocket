@@ -27,7 +27,7 @@ from bittrade_binance_websocket.rest.account_information import (
 )
 from bittrade_binance_websocket.rest.subaccount import (
     query_subaccount_list_http_factory, query_subaccount_margin_summary_http_factory, subaccount_universal_transfer_http_factory, query_subaccount_margin_detail_http_factory, subaccount_transfer_to_master_http_factory, subaccount_transfer_to_subaccount_http_factory,
-    user_universal_transfer_http_factory
+    user_universal_transfer_http_factory, subaccount_add_ip_restriction_http_factory,
 )
 from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
 from bittrade_binance_websocket.rest.margin_portfolio import portfolio_margin_account_info_http_factory
@@ -213,6 +213,7 @@ def get_framework(
         subaccount_universal_transfer_http=subaccount_universal_transfer_http_factory(trade_signer_http),
         subaccount_transfer_to_master_http=subaccount_transfer_to_master_http_factory(trade_signer_http),
         subaccount_transfer_to_subaccount_http=subaccount_transfer_to_subaccount_http_factory(trade_signer_http),
+        subaccount_add_ip_restriction_http=subaccount_add_ip_restriction_http_factory(trade_signer_http),
         user_universal_transfer_http=user_universal_transfer_http_factory(trade_signer_http),
         order_create_http=create_order_http_factory(trade_signer_http),
         order_cancel_http=cancel_order_http_factory(trade_signer_http),

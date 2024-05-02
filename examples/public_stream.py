@@ -18,7 +18,7 @@ console.setLevel(logging.DEBUG)  # <- if you wish to see subscribe/unsubscribe a
 logger = logging.getLogger(
     'bittrade_binance_websocket'
 )
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.addHandler(console)
 
 exchange = binance()
@@ -53,12 +53,16 @@ exchange.load_markets()
 framework = get_framework()
 public_messages = framework.public_stream_sockets.pipe(
     operators.do_action(print, print, print),
-    subscribe_to_channel(framework.public_stream_socket_messages, f"fdusdusdt@bookTicker")
+    # subscribe_to_channel(framework.public_stream_socket_messages, f"fdusdusdt@bookTicker")
+    subscribe_to_channel(framework.public_stream_socket_messages, f"usdcusdt@kline_1s")
 )
 framework.public_stream_bundles.connect()
 
+# sub = public_messages.subscribe(
+#     info_observer('TICKER FDUSDUSDT', 'bittrade_binance_websocket')
+# )
 sub = public_messages.subscribe(
-    info_observer('TICKER FDUSDUSDT', 'bittrade_binance_websocket')
+    info_observer('AVG USDCUSDT', 'bittrade_binance_websocket')
 )
 
 time.sleep(30)

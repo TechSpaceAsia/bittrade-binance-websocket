@@ -66,6 +66,7 @@ class FrameworkContext:
     subaccount_universal_transfer_http: Callable[[UniversalTransferRequest], Observable[dict]]
     subaccount_transfer_to_master_http: Callable[[str, str], Observable[dict]]
     subaccount_transfer_to_subaccount_http: Callable[[str, str, str], Observable[dict]]
+    subaccount_add_ip_restriction_http: Callable[[str, str, Literal[1,2], str], Observable[dict]]
     order_create_http: Callable[[PlaceOrderRequest], Observable[SymbolOrderResponseItem]]
     order_cancel_http: Callable[[OrderCancelRequest], Observable[SymbolOrderResponseItem]]
     trade_list_http: Callable[[TradeDataRequest], Observable[list[TradeDict]]]

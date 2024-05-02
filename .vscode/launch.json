@@ -38,7 +38,7 @@
             "module": "examples.user_stream",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/BTC_Bot_01"
+                "CONFIG_PATH": "./config_local/bot_01_margincall_checker"
             }
         },
         {
@@ -48,7 +48,7 @@
             "module": "examples.create_order",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/master_account"
+                "CONFIG_PATH": "./config_local/bot_01_margincall_checker"
             }
         },
         {
@@ -58,7 +58,7 @@
             "module": "examples.load_trades",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/homeworklinguist"
+                "CONFIG_PATH": "./config_local/bot_01_margincall_checker"
             }
         },
         {

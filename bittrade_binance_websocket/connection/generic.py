@@ -64,7 +64,7 @@ def raw_websocket_connection(
                 try:
                     observer.on_next((enhanced, category, pass_message))
                 except:
-                    logger.exception("[SOCKET] Error on socket message")
+                    logger.error("[SOCKET] Error on socket message", stack_info=True, exc_info=True)
 
             connection = WebSocketApp(
                 url,

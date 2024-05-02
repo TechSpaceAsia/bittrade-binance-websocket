@@ -1,3 +1,4 @@
+from typing import Literal
 from bittrade_binance_websocket.models import endpoints, request
 from bittrade_binance_websocket.models.rest.subaccount import UniversalTransferRequest, UserUniversalTransferRequest
 from bittrade_binance_websocket.rest.http_factory_decorator import http_factory
@@ -65,4 +66,17 @@ def query_subaccount_margin_detail_http_factory(email: str):
         method="GET",
         endpoint=endpoints.BinanceEndpoints.SUBACCOUNT_MARGIN_DETAIL,
         params={"email": email},
+    )
+
+@http_factory(None)  # type: ignore
+def subaccount_add_ip_restriction_http_factory(email: str, api_key: str, status: Literal[1,2], ip_addresses: list[str]):
+    return request.RequestMessage(
+        method="POST",
+        endpoint=endpoints.BinanceEndpoints.SUBACCOUNT_ADD_IP_RESTRICTION,
+        params={
+            "email": email,
+            "subAccountApiKey": api_key,
+            "status": status,
+            "ipAddress": ",".join(ip_addresses),
+        }
     )
