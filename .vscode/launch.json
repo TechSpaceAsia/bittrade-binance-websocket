@@ -48,7 +48,7 @@
             "module": "examples.create_order",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/master_account_ro"
+                "CONFIG_PATH": "./config_local/bot0"
             }
         },
         {
@@ -58,7 +58,7 @@
             "module": "examples.load_trades",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/master_key_ro"
+                "CONFIG_PATH": "./config_local/bot0"
             }
         },
         {

@@ -47,3 +47,4 @@ scripts/
 raw_socket.jsonl
 .envrc
 
+examples/binance-code.py

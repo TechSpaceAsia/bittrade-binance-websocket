@@ -8,6 +8,7 @@ class BinanceEndpoints(Enum):
     GET_TIME = "/api/v3/time"
     CROSS_MARGIN_LISTEN_KEY = "/sapi/v1/userDataStream"
     ISOLATED_MARGIN_LISTEN_KEY = "/sapi/v1/userDataStream/isolated"
+    MARGIN_SPECIAL_MARGIN_KEY = "/sapi/v1/margin/apiKey"
     LISTEN_KEY = "/api/v3/userDataStream"
     MARGIN_OPEN_ORDERS = "/sapi/v1/margin/openOrders"
     MARGIN_ORDER = "/sapi/v1/margin/order"
