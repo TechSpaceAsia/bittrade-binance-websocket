@@ -9,6 +9,8 @@ class BinanceEndpoints(Enum):
     CROSS_MARGIN_LISTEN_KEY = "/sapi/v1/userDataStream"
     ISOLATED_MARGIN_LISTEN_KEY = "/sapi/v1/userDataStream/isolated"
     MARGIN_SPECIAL_MARGIN_KEY = "/sapi/v1/margin/apiKey"
+    MARGIN_SPECIAL_MARGIN_KEY_IP = "/sapi/v1/margin/apiKey/ip"
+    MARGIN_SPECIAL_MARGIN_KEY_LIST = "/sapi/v1/margin/api-key-list"
     LISTEN_KEY = "/api/v3/userDataStream"
     MARGIN_OPEN_ORDERS = "/sapi/v1/margin/openOrders"
     MARGIN_ORDER = "/sapi/v1/margin/order"

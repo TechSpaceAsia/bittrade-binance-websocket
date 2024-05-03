@@ -1,3 +1,9 @@
+# 0.4.4
+
+## Added
+
+- "Special" margin key create, delete, list, get information and edit ip restrictions
+
 # 0.4.3
 
 ## Added
