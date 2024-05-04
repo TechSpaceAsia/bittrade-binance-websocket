@@ -5,13 +5,13 @@ from typing import TypedDict
 class CreateApiKeyRequest:
     name: str
     public_key: str = ""
-    ips: list[str] = dataclasses.field(default_factory=list)
+    ip: list[str] = dataclasses.field(default_factory=list)
     symbol: str = ""
 
     def to_params(self):
         data = {
             "apiName": self.name,
-            "ips": ",".join(self.ips),
+            "ip": ",".join(self.ip),
         }
         if self.public_key:
             data["publicKey"] = self.public_key
