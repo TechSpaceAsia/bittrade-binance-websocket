@@ -38,7 +38,9 @@ def raw_websocket_connection(
 
             def on_error(_ws: WebSocketApp, error: Exception):
                 logger.error("[SOCKET][RAW] Websocket errored %s", error)
-                observer.on_next((enhanced, WEBSOCKET_STATUS, WEBSOCKET_CLOSED))
+                # TODO any other errors we should handle as "not yet connected"?
+                if getattr(error, "errno", None) not in [61]:
+                    observer.on_next((enhanced, WEBSOCKET_STATUS, WEBSOCKET_CLOSED))
                 observer.on_error(error)
 
             def on_close(_ws: WebSocketApp, close_status_code: int, close_msg: str):
@@ -77,7 +79,7 @@ def raw_websocket_connection(
 
             def run_forever(*args: Any):
                 assert connection is not None
-                connection.run_forever()
+                connection.run_forever(reconnect=False, skip_utf8_validation=True)
 
             _scheduler.schedule(run_forever)
 

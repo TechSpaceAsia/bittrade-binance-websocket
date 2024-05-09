@@ -1,3 +1,10 @@
+# 0.4.5
+
+## Changed
+
+- Don't emit new websocket on connection failure (websocket was never opened)
+- Skip utf8 validation to reduce load on websocket read
+
 # 0.4.4
 
 ## Added

@@ -68,7 +68,8 @@
             "module": "examples.public_stream",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/main"
+                "CONFIG_PATH": "./config_local/main",
+                "BINANCE_STREAM_WEBSOCKET": "ws://localhost:30001"
             }
         }
     ]
