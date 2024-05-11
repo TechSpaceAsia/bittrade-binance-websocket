@@ -1,3 +1,15 @@
+# 0.4.6
+
+## Added
+
+- Account status via websocket
+- Fetaure from 0.4.5 "Don't emit new websocket on connection failure (websocket was never opened)" modified slightly; instead of looking at error code, we keep a boolean flag to confirm that socket was ever connected
+
+## Changed
+
+- Don't emit new websocket on connection failure (websocket was never opened)
+- Skip utf8 validation to reduce load on websocket read
+
 # 0.4.5
 
 ## Changed
