@@ -32,14 +32,15 @@ def raw_websocket_connection(
     ):
         _scheduler = scheduler or scheduler_ or ThreadPoolScheduler()
         connection: WebSocketApp | None = None
+        already_connected = False
 
         def action(*args: Any):
-            nonlocal connection
+            nonlocal connection, already_connected
 
             def on_error(_ws: WebSocketApp, error: Exception):
                 logger.error("[SOCKET][RAW] Websocket errored %s", error)
-                # TODO any other errors we should handle as "not yet connected"?
-                if getattr(error, "errno", None) not in [61]:
+                # There are cases (like no internet connection) where the socket will never open, but will error. We don't want to emit closed in that case
+                if already_connected:
                     observer.on_next((enhanced, WEBSOCKET_STATUS, WEBSOCKET_CLOSED))
                 observer.on_error(error)
 
@@ -54,7 +55,9 @@ def raw_websocket_connection(
                 observer.on_error(Exception("Socket closed"))
 
             def on_open(_ws: WebSocketApp):
+                nonlocal already_connected
                 logger.info("[SOCKET][RAW] Websocket opened at %s", url)
+                already_connected = True
                 observer.on_next((enhanced, WEBSOCKET_STATUS, WEBSOCKET_OPENED))
 
             def on_message(ws: WebSocketApp, message: bytes | str):
