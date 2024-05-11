@@ -42,6 +42,9 @@ def to_sorted_qs(values: Union[Dict[str, Any], Any]) -> Tuple[Tuple[str, Any]]:
         if isinstance(value, Enum):
             value = cast(Enum, value).value
 
+        if isinstance(value, bool):
+            value = str(value).lower()
+
         # remove None
         if value is not None:
             sorted_tuple = sorted_tuple + (
