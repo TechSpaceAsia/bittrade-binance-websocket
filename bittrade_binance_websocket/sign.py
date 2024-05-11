@@ -2,7 +2,7 @@ from enum import Enum
 import hashlib
 import hmac
 from typing import Any, Dict, Tuple, Union, cast
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 
 from expression import curry_flip
 from datetime import datetime
@@ -105,7 +105,7 @@ def sign_request_factory(key: str, secret: str):
             payload = request.data
         payload = del_none(payload)
         # Code adapted from https://github.com/binance/binance-signature-examples/blob/master/python/spot/spot.py
-        query_string = urlencode(payload, True)
+        query_string = urlencode(payload, True, quote_via=quote)
         ts = int(datetime.now().timestamp() * 1000)
         if query_string:
             query_string = "{}&timestamp={}".format(query_string, ts)

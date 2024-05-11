@@ -77,12 +77,17 @@ class PlaceOrderRequest:
             as_dict["isIsolated"] = "TRUE" if self.isIsolated else "FALSE"
         else:
             del as_dict["isIsolated"]
+        if self.type in [OrderType.MARKET, OrderType.LIMIT_MAKER]:
+            del as_dict["timeInForce"]
+        elif self.timeInForce:
+            as_dict["timeInForce"] = self.timeInForce.value
+        if self.type == OrderType.MARKET:
+            del as_dict["price"]
         for key in (
             "newOrderRespType",
             "selfTradePreventionMode",
             "side",
             "type",
-            "timeInForce",
         ):
             if enum_value := getattr(self, key, None):
                 as_dict[key] = enum_value.value

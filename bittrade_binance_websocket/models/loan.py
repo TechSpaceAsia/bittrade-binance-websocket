@@ -17,3 +17,21 @@ class AccountBorrowRequest:
         else:
             del as_dict["symbol"]
         return as_dict
+
+
+@dataclasses.dataclass
+class MaxBorrowableRequest:
+    asset: str
+    isolated_symbol: str = ""
+
+    def to_dict(self):
+        as_dict = dataclasses.asdict(self)
+        del as_dict["isolated_symbol"]
+        if self.isolated_symbol:
+            as_dict["isolatedSymbol"] = self.isolated_symbol
+        return as_dict
+
+
+class FutureInterestRate(TypedDict):
+    asset: str
+    nextHourlyInterestRate: str

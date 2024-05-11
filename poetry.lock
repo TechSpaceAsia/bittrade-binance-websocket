@@ -639,14 +639,14 @@ files = [
 
 [[package]]
 name = "elm-framework-helpers"
-version = "0.2.7"
+version = "0.3.0"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "elm_framework_helpers-0.2.7-py3-none-any.whl", hash = "sha256:2753c0f2c247cc06e7be5a999cfbd6ccb288b5404116e6611a80f7c9bcb3b302"},
-    {file = "elm_framework_helpers-0.2.7.tar.gz", hash = "sha256:d49e22830b562ee12155a268cd081d334e4533cdf0c58b35a2c6a500dac67599"},
+    {file = "elm_framework_helpers-0.3.0-py3-none-any.whl", hash = "sha256:72ff12734bb14abe73925e612611db06de31acee57a054e4ea06ae0d42885270"},
+    {file = "elm_framework_helpers-0.3.0.tar.gz", hash = "sha256:9f90687539dffcb9bd24d873fc0d13daed06c0b501204e0a7af83a128c421291"},
 ]
 
 [package.dependencies]
@@ -655,6 +655,7 @@ orjson = ">=3.8.6,<4.0.0"
 reactivex = ">=4.0.4,<5.0.0"
 uvicorn = ">=0.20.0,<0.21.0"
 websocket-client = ">=1.5.1,<2.0.0"
+websocket-server = ">=0.6.4,<0.7.0"
 
 [[package]]
 name = "executing"
@@ -1866,6 +1867,18 @@ optional = ["python-socks", "wsaccel"]
 test = ["websockets"]
 
 [[package]]
+name = "websocket-server"
+version = "0.6.4"
+description = "A simple fully working websocket-server in Python with no external dependencies"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "websocket_server-0.6.4-py3-none-any.whl", hash = "sha256:aca2d8f7569c82fe3e949cbae1f9d3f3035ae15f1d4048085431c94b7dfd35be"},
+    {file = "websocket_server-0.6.4.tar.gz", hash = "sha256:a8a02d575905e50f6af90bbbc37d23d7e1b027630897f0eeefed6a3fb3c22e07"},
+]
+
+[[package]]
 name = "websockets"
 version = "10.4"
 description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
@@ -2035,4 +2048,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "18878799ad6a7f168dbc53e58f448e24acff065fbd790f2e4cb4d81362b8320e"
+content-hash = "720d5b4a21f5bfa20c57238c2a922f31aa7c555a82137a75e50e004352f34241"

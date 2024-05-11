@@ -6,14 +6,14 @@
     "configurations": [
         {
             "name": "Get time HTTP",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "examples.get_time",
             "justMyCode": true
         },
         {
             "name": "Orders Websocket",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "examples.orders",
             "justMyCode": true,
@@ -23,7 +23,7 @@
         },
         {
             "name": "Examples | Listen key",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "examples.get_listen_key",
             "justMyCode": true,
@@ -33,32 +33,43 @@
         },
         {
             "name": "Examples | User stream",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "examples.user_stream",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/BTC_Bot_01"
+                "CONFIG_PATH": "./config_local/bot_01_margincall_checker"
             }
         },
         {
             "name": "Examples | Create order",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "examples.create_order",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/BTC_Bot_07"
+                "CONFIG_PATH": "./config_local/bot0"
             }
         },
         {
             "name": "Examples | Load trades",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "examples.load_trades",
             "justMyCode": false,
             "env": {
-                "CONFIG_PATH": "./config_local/BTC_Bot_06"
+                "CONFIG_PATH": "./config_local/bot0"
+            }
+        },
+        {
+            "name": "Examples | Public stream",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "examples.public_stream",
+            "justMyCode": false,
+            "env": {
+                "CONFIG_PATH": "./config_local/main",
+                "BINANCE_STREAM_WEBSOCKET": "ws://localhost:30001"
             }
         }
     ]

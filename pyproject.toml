@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bittrade-binance-websocket"
-version = "0.1.8"
+version = "0.4.5"
 description = "Reactive Websocket for Binance"
 authors = ["mat <matt@techspace.asia>"]
 readme = "README.md"
@@ -29,7 +29,7 @@ prompt-toolkit = "^3.0.36"
 requests = "^2.28.2"
 asyncio = "^3.4.3"
 websockets = "^10.4"
-elm-framework-helpers = "^0.2.7"
+elm-framework-helpers = "^0.3.0"
 
 
 [tool.poetry.group.env.dependencies]
@@ -47,6 +47,12 @@ pyright = "^1.1.287"
 
 [tool.mypy]
 plugins = "returns.contrib.mypy.returns_plugin"
+
+
+
+
+
+
 
 
 

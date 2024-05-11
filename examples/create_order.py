@@ -22,7 +22,10 @@ from bittrade_binance_websocket.models.order import (
     PlaceOrderResponse,
     SymbolOrdersCancelRequest,
 )
-from bittrade_binance_websocket.models.loan import AccountBorrowRequest
+from bittrade_binance_websocket.models.loan import (
+    AccountBorrowRequest,
+    MaxBorrowableRequest,
+)
 from bittrade_binance_websocket.models.response_message import ResponseMessage
 from IPython.terminal import embed
 
@@ -59,6 +62,10 @@ framework = get_framework(
     trade_signer_http=sign_request_factory(key, secret),
     load_markets=False,
 )
+r = MaxBorrowableRequest(asset="FDUSD")
+print(framework.margin_max_borrowable_http(r).run())
+r = MaxBorrowableRequest(asset="FDUSD", isolated_symbol="FDUSDUSDT")
+print(framework.margin_max_borrowable_http(r).run())
 # framework.spot_trade_socket_messages.subscribe(print, print, print)
 # framework.spot_symbol_orders_cancel_http(
 #     SymbolOrdersCancelRequest(symbol="BTCUSDT")
@@ -69,12 +76,12 @@ framework = get_framework(
 # )
 
 order_request = PlaceOrderRequest(
-    symbol="BTCTUSD",
+    symbol="USDCUSDT",
     side=OrderSide.BUY,
     type=OrderType.LIMIT_MAKER,
-    timeInForce=None,
-    quantity="0.005",
-    price="28050",
+    timeInForce=OrderTimeInForceType.GTC,
+    quantity="10",
+    price="0.9998",
     newOrderRespType=OrderResponseType.FULL,
     quoteOrderQty=None,
     stopPrice=None,
@@ -84,13 +91,13 @@ order_request = PlaceOrderRequest(
     is_margin=True,
 )
 
-bundles, sockets, messages = framework.isolated_margin_user_stream_factory("BTCTUSD")
+# bundles, sockets, messages = framework.isolated_margin_user_stream_factory("BTCTUSD")
 
-ready = sockets.pipe(
-    operators.filter(lambda x: x is not None), operators.take(1), operators.share()
-)
-ready.subscribe(debug_observer("READY", logger_name))
-messages.subscribe(debug_observer("MESSAGE", logger_name))
+# ready = sockets.pipe(
+#     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
+# )
+# ready.subscribe(debug_observer("READY", logger_name))
+# messages.subscribe(debug_observer("MESSAGE", logger_name))
 # ready = framework.spot_trade_guaranteed_sockets.pipe(
 #     operators.filter(lambda x: x is not None), operators.take(1), operators.share()
 # )
@@ -103,11 +110,11 @@ messages.subscribe(debug_observer("MESSAGE", logger_name))
 # )
 
 
-sub = bundles.connect()
+# sub = bundles.connect()
 
 # Can be triggered manually or part of a concat with ready etc
 # framework.spot_order_create(order_request).subscribe(print, print, print)
 
 embed.embed()
 
-sub.dispose()
+# sub.dispose()

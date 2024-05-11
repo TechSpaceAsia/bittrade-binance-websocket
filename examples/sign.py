@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 from typing import Literal
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 import hmac
 import hashlib
 import base64
@@ -24,7 +24,7 @@ def sign_request_factory(key: str, secret: str):
         request.headers.update({"X-MBX-APIKEY": key})
         payload = del_none(request.data)
         # Code adapted from https://github.com/binance/binance-signature-examples/blob/master/python/spot/spot.py
-        query_string = urlencode(payload, True)
+        query_string = urlencode(payload, True, quote_via=quote)
         ts = int(datetime.now().timestamp() * 1000)
         if query_string:
             query_string = "{}&timestamp={}".format(query_string, ts)

@@ -13,6 +13,7 @@ from elm_framework_helpers.config import read_config
 from bittrade_binance_websocket.framework.framework import get_framework
 from bittrade_binance_websocket.sign import user_stream_signer_factory
 from bittrade_binance_websocket.models.trade import TradeDataRequest
+from bittrade_binance_websocket.rest.margin_loan import future_hourly_interest_rate_http_factory
 from IPython.terminal import embed
 
 from bittrade_binance_websocket.rest.trade_list import (
@@ -49,14 +50,14 @@ framework = get_framework(
     load_markets=False,
 )
 
-
 trade_list_request = TradeDataRequest(
     symbol="BTCTUSD",
     isIsolated=False,
     is_margin=False,
     startTime=datetime.now() - timedelta(hours=32),
 )
-
+embed.embed()
+exit(1)
 lister = account_trade_list_http_factory(sign_request_factory(key, secret))
 
 def write_to_csv(x):
@@ -82,5 +83,4 @@ def write_to_csv(x):
 
 lister(trade_list_request).pipe(operators.reduce(lambda acc, curr: acc + curr, [])).subscribe(write_to_csv)
 
-embed.embed()
 

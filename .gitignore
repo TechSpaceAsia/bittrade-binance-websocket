@@ -47,3 +47,5 @@ scripts/
 raw_socket.jsonl
 .envrc
 
+examples/binance-code.py
+examples/create_margin_key.py

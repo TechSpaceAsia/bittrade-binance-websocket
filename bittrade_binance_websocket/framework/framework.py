@@ -10,7 +10,9 @@ from reactivex.scheduler import ThreadPoolScheduler
 from reactivex.subject import BehaviorSubject
 
 from bittrade_binance_websocket import models
-from bittrade_binance_websocket.connection.public_stream import public_websocket_connection
+from bittrade_binance_websocket.connection.public_stream import (
+    public_websocket_connection,
+)
 from bittrade_binance_websocket.connection.private import private_websocket_connection
 from bittrade_binance_websocket.connection.private_user_stream import (
     private_websocket_user_stream,
@@ -20,9 +22,20 @@ from bittrade_binance_websocket.events.cancel_order import (
     cancel_order_factory,
     cancel_symbol_orders_factory,
 )
+from bittrade_binance_websocket.rest.account_information import (
+    get_account_information_http_factory,
+)
+from bittrade_binance_websocket.rest.subaccount import (
+    query_subaccount_list_http_factory, query_subaccount_margin_summary_http_factory, subaccount_universal_transfer_http_factory, query_subaccount_margin_detail_http_factory, subaccount_transfer_to_master_http_factory, subaccount_transfer_to_subaccount_http_factory,
+    user_universal_transfer_http_factory, subaccount_add_ip_restriction_http_factory,
+)
 from bittrade_binance_websocket.rest.cancel_order import cancel_order_http_factory
+from bittrade_binance_websocket.rest.margin_portfolio import portfolio_margin_account_info_http_factory
 from bittrade_binance_websocket.rest.query_margin_account import (
     query_margin_account_details_http_factory,
+)
+from bittrade_binance_websocket.rest.query_max_transfer_out_amount import (
+    query_max_transfer_out_amount_http_factory,
 )
 from bittrade_binance_websocket.rest.trade_list import account_trade_list_http_factory
 from bittrade_binance_websocket.rest.query_margin_fee_data import (
@@ -40,19 +53,25 @@ from bittrade_binance_websocket.rest.current_open_orders import (
 from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsocket
 from bittrade_binance_websocket.models.framework import FrameworkContext
 from bittrade_binance_websocket.rest.symbol_price_ticker import symbol_price_ticker_http
+from bittrade_binance_websocket.rest.symbol_price_book_ticker import (
+    symbol_price_book_ticker_http,
+)
 from bittrade_binance_websocket.rest.listen_key import (
     delete_listen_key_http_factory,
     get_active_listen_key_http_factory,
     get_listen_key_http_factory,
-    isolated_margin_delete_listen_key_http_factory,
-    isolated_margin_get_active_listen_key_http_factory,
-    isolated_margin_get_listen_key_http_factory,
-    isolated_margin_ping_listen_key_http_factory,
+    margin_delete_listen_key_http_factory,
+    margin_get_listen_key_http_factory,
+    margin_ping_listen_key_http_factory,
     ping_listen_key_http_factory,
 )
 from bittrade_binance_websocket.rest.margin_loan import (
     account_borrow_http_factory,
     account_repay_http_factory,
+    future_hourly_interest_rate_http_factory,
+    interest_history_http_factory,
+    max_borrowable_http_factory,
+    available_inventory_http_factory,
 )
 
 logger = getLogger(__name__)
@@ -80,19 +99,19 @@ def get_framework(
     get_active_listen_key_http = get_active_listen_key_http_factory(
         user_stream_signer_http
     )
+    get_account_information_http = get_account_information_http_factory(
+        trade_signer_http
+    )
     get_listen_key_http = get_listen_key_http_factory(user_stream_signer_http)
     keep_alive_listen_key_http = ping_listen_key_http_factory(user_stream_signer_http)
     delete_listen_key_http = delete_listen_key_http_factory(user_stream_signer_http)
-    isolated_margin_get_listen_key_http = (
-        isolated_margin_get_active_listen_key_http_factory(user_stream_signer_http)
+    margin_get_listen_key_http = (
+        margin_get_listen_key_http_factory(user_stream_signer_http)
     )
-    isolated_margin_keep_alive_listen_key_http = (
-        isolated_margin_ping_listen_key_http_factory(user_stream_signer_http)
+    margin_keep_alive_listen_key_http = (
+        margin_ping_listen_key_http_factory(user_stream_signer_http)
     )
-    isolated_margin_delete_listen_key_http = (
-        isolated_margin_delete_listen_key_http_factory(user_stream_signer_http)
-    )
-
+    
     # Setup up public stream
     public_stream_bundles = public_websocket_connection()
     public_stream_sockets = public_stream_bundles.pipe(
@@ -115,9 +134,13 @@ def get_framework(
         connection_operators.keep_messages_only()
     )
 
-    def isolated_margin_user_stream_factory(symbol: str):
-        key_getter = lambda: isolated_margin_get_listen_key_http(symbol)
-        keep_alive = lambda key: isolated_margin_keep_alive_listen_key_http(key, symbol)
+    def margin_user_stream_factory(symbol: str | None=None):
+        """
+        Skip symbol for cross margin
+        """
+        symbol = symbol or ""
+        key_getter = lambda: margin_get_listen_key_http(symbol)
+        keep_alive = lambda key: margin_keep_alive_listen_key_http(key, symbol)
         socket_bundles = private_websocket_user_stream(key_getter, keep_alive)
         socket = socket_bundles.pipe(connection_operators.keep_new_socket_only())
 
@@ -152,21 +175,31 @@ def get_framework(
         trade_signer_http
     )
     query_margin_fee_data_http = query_margin_fee_data_http_factory(trade_signer_http)
+    available_inventory_http = available_inventory_http_factory(trade_signer_http)
 
     return FrameworkContext(
         all_subscriptions=all_subscriptions,
         exchange=exchange,
         delete_listen_key_http=delete_listen_key_http,
+        get_account_information_http=get_account_information_http,
         get_active_listen_key_http=get_active_listen_key_http,
         get_listen_key_http=get_listen_key_http,
-        isolated_margin_get_listen_key_http=isolated_margin_get_listen_key_http,
-        isolated_margin_user_stream_factory=isolated_margin_user_stream_factory,
+        margin_get_listen_key_http=margin_get_listen_key_http,
+        margin_user_stream_factory=margin_user_stream_factory,
         keep_alive_listen_key_http=keep_alive_listen_key_http,
         market_symbol_price_ticker_http=symbol_price_ticker_http,
+        market_symbol_price_book_ticker_http=symbol_price_book_ticker_http,
         margin_query_cross_margin_account_details_http=query_cross_margin_account_details_http,
         margin_query_margin_fee_data_http=query_margin_fee_data_http,
+        margin_query_max_transfer_out_amount_http=query_max_transfer_out_amount_http_factory(trade_signer_http),
         margin_account_borrow_http=account_borrow_http_factory(trade_signer_http),
         margin_account_repay_http=account_repay_http_factory(trade_signer_http),
+        margin_max_borrowable_http=max_borrowable_http_factory(trade_signer_http),
+        margin_portfolio_account_information=portfolio_margin_account_info_http_factory(trade_signer_http),
+        margin_interest_history_http=interest_history_http_factory(trade_signer_http),margin_future_hourly_interest_rate_http=future_hourly_interest_rate_http_factory(
+            trade_signer_http
+        ),
+        available_inventory_http=available_inventory_http,
         spot_trade_socket_bundles=spot_trade_socket_bundles,
         spot_trade_socket_messages=spot_trade_socket_messages,
         spot_trade_sockets=spot_trade_sockets,
@@ -174,6 +207,14 @@ def get_framework(
         spot_order_create=spot_order_create,
         spot_order_cancel=spot_order_cancel,
         spot_symbol_orders_cancel=spot_symbol_orders_cancel,
+        subaccount_query_list_http=query_subaccount_list_http_factory(trade_signer_http),
+        subaccount_query_margin_summary_http=query_subaccount_margin_summary_http_factory(trade_signer_http),
+        subaccount_query_margin_detail_http=query_subaccount_margin_detail_http_factory(trade_signer_http),
+        subaccount_universal_transfer_http=subaccount_universal_transfer_http_factory(trade_signer_http),
+        subaccount_transfer_to_master_http=subaccount_transfer_to_master_http_factory(trade_signer_http),
+        subaccount_transfer_to_subaccount_http=subaccount_transfer_to_subaccount_http_factory(trade_signer_http),
+        subaccount_add_ip_restriction_http=subaccount_add_ip_restriction_http_factory(trade_signer_http),
+        user_universal_transfer_http=user_universal_transfer_http_factory(trade_signer_http),
         order_create_http=create_order_http_factory(trade_signer_http),
         order_cancel_http=cancel_order_http_factory(trade_signer_http),
         trade_list_http=account_trade_list_http_factory(trade_signer_http),
