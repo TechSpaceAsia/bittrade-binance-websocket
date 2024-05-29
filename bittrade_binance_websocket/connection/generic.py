@@ -36,6 +36,7 @@ def raw_websocket_connection(
 
         def action(*args: Any):
             nonlocal connection, already_connected
+            logger.info("[SOCKET] attempt to start")
 
             def on_error(_ws: WebSocketApp, error: Exception):
                 logger.error("[SOCKET][RAW] Websocket errored %s", error)
@@ -81,6 +82,7 @@ def raw_websocket_connection(
             enhanced = EnhancedWebsocket(connection)
 
             def run_forever(*args: Any):
+                logger.info("[SOCKET] attempt to run forever")
                 assert connection is not None
                 connection.run_forever(reconnect=False, skip_utf8_validation=True)
 
