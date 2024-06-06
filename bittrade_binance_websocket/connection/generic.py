@@ -31,6 +31,7 @@ def raw_websocket_connection(
         scheduler_: Optional[SchedulerBase] = None,
     ):
         _scheduler = scheduler or scheduler_ or ThreadPoolScheduler()
+        logger.warning("[SOCKET] _scheduler is %s", _scheduler)
         connection: WebSocketApp | None = None
         already_connected = False
 
