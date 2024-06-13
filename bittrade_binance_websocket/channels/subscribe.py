@@ -6,7 +6,7 @@ from reactivex import Observable, operators, compose
 from reactivex.abc import ObserverBase, SchedulerBase
 from reactivex.disposable import CompositeDisposable, Disposable
 
-from .message import make_sub_unsub_messages
+from .message import make_sub_unsub_messages, make_sub_unsub_messages_list
 
 from bittrade_binance_websocket.models import (
     UserFeedMessage,
