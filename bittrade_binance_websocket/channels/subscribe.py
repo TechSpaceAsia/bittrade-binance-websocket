@@ -26,10 +26,17 @@ def channel_subscription(
     socket: EnhancedWebsocket,
     channel: str,
     unsubscribe_on_dispose: bool,
+    channel_list: List[str] = [],
 ) -> Observable[UserFeedMessage]:
     def subscribe(observer: ObserverBase, scheduler: Optional[SchedulerBase] = None):
-        subscription_message, unsubscription_message = make_sub_unsub_messages(channel)
-        socket.send_message(subscription_message)
+        if len(channel_list) == 0:
+            subscription_message, unsubscription_message = make_sub_unsub_messages(channel)
+            socket.send_message(subscription_message)
+        else:
+            subscription_message, unsubscription_message = make_sub_unsub_messages_list(
+                channel_list
+            )
+            socket.send_message(subscription_message)
 
         def on_exit():
             if unsubscribe_on_dispose:
@@ -51,13 +58,14 @@ def subscribe_to_channel(
     messages: Observable[ResponseMessage],
     channel: str,
     unsubscribe_on_dispose: bool = True,
+    channel_list: List[str] = [],
 ) -> Callable[[Observable[EnhancedWebsocket]], Observable[UserFeedMessage]]:
     def socket_to_channel_messages(
         socket: EnhancedWebsocket,
     ) -> Observable[UserFeedMessage]:
         return messages.pipe(
-            keep_channel_messages(channel),
-            channel_subscription(socket, channel, unsubscribe_on_dispose),
+            keep_channel_messages(channel, channel_list),
+            channel_subscription(socket, channel, unsubscribe_on_dispose, channel_list),
             # operators.map(_log),
         )
 

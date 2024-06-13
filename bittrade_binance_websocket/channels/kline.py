@@ -19,13 +19,17 @@ def get_kline_message(x: UserFeedMessage) -> UserFeedMessage:
 
 def subscribe_kline(
     messages: Observable[Dict | List],
-    symbol: str,
+    symbol: str = "",
     interval: str = "1d",
+    symbol_list: List[str] = [],
 ) -> Callable[[Observable[EnhancedWebsocket]], Observable[UserFeedMessage]]:
     """Unparsed orders (only extracted result array)"""
-    ticker = f"{symbol}@kline_{interval}"
+    if symbol:
+        channel_list = [f"{symbol}@kline_{interval}"]
+    else:
+        channel_list = [f"{symbol}@kline_{interval}" for symbol in symbol_list]
     return compose(
-        subscribe_to_channel(messages, ticker),
+        subscribe_to_channel(messages, "", channel_list=channel_list),
         operators.filter(is_kline_message),
         operators.map(get_kline_message),
     )
