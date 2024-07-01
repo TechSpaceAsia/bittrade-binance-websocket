@@ -60,15 +60,17 @@ def future_hourly_interest_rate_http_factory(assets: list[str], is_isolated=Fals
         },
     )
 
-@http_factory(list[loan.FutureInterestRate])
-def interest_history_http_factory(assets: list[str], is_isolated=False, size=100):
-    # TODO this is a paginated endpoint, we should allow for that
+@http_factory(list[loan.InterestHistoryResponse])
+def interest_history_http_factory(asset: str, isolated_symbol="", size=100, current_page=1):
+    params = {
+        "asset": asset,
+        "size": size,
+        "current": current_page
+    }
+    if isolated_symbol:
+        params["isolatedSymbol"] = isolated_symbol
     return request.RequestMessage(
         method="GET",
         endpoint=endpoints.BinanceEndpoints.MARGIN_INTEREST_HISTORY,
-        params={
-            "assets": ",".join(assets),
-            "isIsolated": "TRUE" if is_isolated else "FALSE",
-            "size": size
-        },
+        params=params,
     )
