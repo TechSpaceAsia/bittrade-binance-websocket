@@ -50,3 +50,17 @@ class InterestHistory(TypedDict):
 class InterestHistoryResponse(TypedDict):
     total: int
     rows: list[InterestHistory]
+
+class BorrowRepayRecord(TypedDict):
+    txId: str
+    asset: str
+    timestamp: int
+    status: Literal["PENDING", "CONFIRMED", "FAILED"]
+    amount: str
+    interest: str
+    principal: str
+    isolatedSymbol: str  # Only present if isolated symbol
+
+class BorrowRepayRecordResponse(TypedDict):
+    total: int
+    rows: list[BorrowRepayRecord]

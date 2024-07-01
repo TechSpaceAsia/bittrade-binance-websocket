@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Callable, Literal, NamedTuple, Optional
 
 from ccxt import binance
@@ -12,7 +13,9 @@ from bittrade_binance_websocket.models import UserFeedMessage
 from bittrade_binance_websocket.models.portfolio import PortfolioMarginAccountInfo
 from bittrade_binance_websocket.models.loan import (
     AccountBorrowRequest,
+    InterestHistoryResponse,
     MaxBorrowableRequest,
+    BorrowRepayRecordResponse,
 )
 from bittrade_binance_websocket.models.response_message import SpotResponseMessage
 from bittrade_binance_websocket.models.rest import margin_account
@@ -75,7 +78,8 @@ class FrameworkContext:
     margin_portfolio_account_information: Callable[[], Observable[PortfolioMarginAccountInfo]]
     available_inventory_http: Callable[[bool], Observable[dict]]
     margin_max_borrowable_http: Callable[[MaxBorrowableRequest], Observable[dict]]
-    margin_interest_history_http: Callable[[list[str], bool, int], Observable[dict]]
+    margin_interest_history_http: Callable[[str, Optional[str], Optional[int], Optional[int]], Observable[InterestHistoryResponse]]
+    margin_query_borrow_repay_http: Callable[[str, Literal["BORROW", "REPAY"], Optional[str], Optional[int], Optional[int], Optional[datetime], Optional[datetime]], Observable[BorrowRepayRecordResponse]]
     margin_future_hourly_interest_rate_http: Callable[[list[str], bool], Observable[list[dict]]]
     spot_symbol_orders_cancel: Callable[
         [SymbolOrdersCancelRequest], Observable[SpotResponseMessage]

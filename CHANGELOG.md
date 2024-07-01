@@ -1,3 +1,9 @@
+# 0.4.8
+
+## Added
+
+- Margin query borrow/repay records
+
 # 0.4.7
 
 ## Changed

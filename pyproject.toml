@@ -22,7 +22,6 @@ websocket-client = "^1.4.2"
 orjson = "^3.8.3"
 expression = "^4.2.2"
 pydantic = "^1.10.4"
-returns = "^0.19.0"
 ccxt = "^2.6.5"
 ptpython = "^3.0.22"
 prompt-toolkit = "^3.0.36"
@@ -44,29 +43,6 @@ pytest = "^7.2.0"
 ipython = "^8.8.0"
 pytest-cov = "^4.0.0"
 pyright = "^1.1.287"
-
-[tool.mypy]
-plugins = "returns.contrib.mypy.returns_plugin"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 [tool.poetry.group.rich.dependencies]
 fire = "^0.5.0"
