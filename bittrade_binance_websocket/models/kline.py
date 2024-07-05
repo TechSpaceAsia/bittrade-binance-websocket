@@ -9,7 +9,7 @@ class KlineRequest:
     startTime: Optional[int] = None
     endTime: Optional[int] = None
     limit: Optional[int] = None
-    timeZone: Optional[str] = ""
+    timeZone: Optional[str] = None
     is_margin: Optional[bool] = False
 
     def to_dict(self):
