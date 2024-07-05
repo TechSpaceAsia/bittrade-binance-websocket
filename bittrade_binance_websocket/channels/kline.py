@@ -31,7 +31,6 @@ def subscribe_kline(
     return compose(
         subscribe_to_channel(messages, "", channel_list=channel_list),
         operators.filter(is_kline_message),
-        operators.map(get_kline_message),
     )
 
 
