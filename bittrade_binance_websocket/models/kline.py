@@ -6,10 +6,10 @@ from typing import Optional
 class KlineRequest:
     symbol: str
     interval: str
-    startTime: Optional[int]
-    endTime: Optional[int]
-    limit: Optional[int]
-    timeZone: Optional[str]
+    startTime: Optional[int] = None
+    endTime: Optional[int] = None
+    limit: Optional[int] = None
+    timeZone: Optional[str] = ""
     is_margin: Optional[bool] = False
 
     def to_dict(self):
