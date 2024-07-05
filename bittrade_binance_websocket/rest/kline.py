@@ -15,9 +15,7 @@ def get_kline_http(params: kline.KlineRequest):
     def subscribe(observer, scheduler=None):
         req = request.RequestMessage(
             method="GET",
-            endpoint=endpoints.BinanceEndpoints.MARGIN_ORDER
-            if params.is_margin
-            else endpoints.BinanceEndpoints.SPOT_ORDER,
+            endpoint=endpoints.BinanceEndpoints.SPOT_KLINE,
             params=params.to_dict(),
         )
         return http.send_request(http.prepare_request(req)).subscribe(
