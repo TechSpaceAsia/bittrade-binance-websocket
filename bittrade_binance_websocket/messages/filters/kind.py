@@ -1,5 +1,5 @@
 from reactivex import operators
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Callable, List
 from reactivex import Observable
 from bittrade_binance_websocket.models import UserFeedMessage, ResponseMessage
 
@@ -14,6 +14,11 @@ def _is_channel_message(channel: str):
 
 
 def keep_channel_messages(
-    channel: str,
+    channel: str = "",
+    channel_list: List[str] = []
 ) -> Callable[[Observable[ResponseMessage]], Observable[UserFeedMessage]]:
-    return operators.filter(_is_channel_message(channel))
+    if channel: 
+        return operators.filter(_is_channel_message(channel))
+    else:
+        symbol_list = [channel.split("@")[0] for channel in channel_list]
+        return operators.filter(lambda x: x.get("s", "").lower() in symbol_list)
