@@ -72,6 +72,7 @@ from bittrade_binance_websocket.rest.margin_loan import (
     interest_history_http_factory,
     max_borrowable_http_factory,
     available_inventory_http_factory,
+    query_borrow_repay_http_factory,
 )
 
 logger = getLogger(__name__)
@@ -196,7 +197,9 @@ def get_framework(
         margin_account_repay_http=account_repay_http_factory(trade_signer_http),
         margin_max_borrowable_http=max_borrowable_http_factory(trade_signer_http),
         margin_portfolio_account_information=portfolio_margin_account_info_http_factory(trade_signer_http),
-        margin_interest_history_http=interest_history_http_factory(trade_signer_http),margin_future_hourly_interest_rate_http=future_hourly_interest_rate_http_factory(
+        margin_interest_history_http=interest_history_http_factory(trade_signer_http),
+        margin_query_borrow_repay_http=query_borrow_repay_http_factory(trade_signer_http),
+        margin_future_hourly_interest_rate_http=future_hourly_interest_rate_http_factory(
             trade_signer_http
         ),
         available_inventory_http=available_inventory_http,

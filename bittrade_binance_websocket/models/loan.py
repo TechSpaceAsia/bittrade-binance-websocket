@@ -1,6 +1,6 @@
 import dataclasses
 from enum import Enum
-from typing import Optional, TypedDict
+from typing import Literal, Optional, TypedDict
 
 
 @dataclasses.dataclass
@@ -35,3 +35,32 @@ class MaxBorrowableRequest:
 class FutureInterestRate(TypedDict):
     asset: str
     nextHourlyInterestRate: str
+
+class InterestHistory(TypedDict):
+    txId: str
+    asset: str
+    interestAccuredTime: int
+    rawAsset: str  # Only present if NOT isolated symbol
+    principal: str
+    interest: str
+    interestRate: str
+    type: Literal["PERIODIC", "ON_BORROW", "PERIODIC_CONVERTED", "ON_BORROW_CONVERTED", "PORTFOLIO"]
+    isolatedSymbol: str  # Only present if isolated symbol
+
+class InterestHistoryResponse(TypedDict):
+    total: int
+    rows: list[InterestHistory]
+
+class BorrowRepayRecord(TypedDict):
+    txId: str
+    asset: str
+    timestamp: int
+    status: Literal["PENDING", "CONFIRMED", "FAILED"]
+    amount: str
+    interest: str
+    principal: str
+    isolatedSymbol: str  # Only present if isolated symbol
+
+class BorrowRepayRecordResponse(TypedDict):
+    total: int
+    rows: list[BorrowRepayRecord]

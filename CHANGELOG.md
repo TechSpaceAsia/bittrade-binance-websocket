@@ -1,3 +1,15 @@
+# 0.4.8
+
+## Added
+
+- Margin query borrow/repay records
+
+# 0.4.7
+
+## Changed
+
+- Interest history fixed (took wrong parameter). Also fixed the response model for that endpoint
+
 # 0.4.6
 
 ## Added
