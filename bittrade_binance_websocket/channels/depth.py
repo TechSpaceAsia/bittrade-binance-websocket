@@ -8,8 +8,24 @@ from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsock
 from bittrade_binance_websocket.models.message import UserFeedMessage
 
 def extract_data():
+
+    def remove_zero(message: Any):
+        if message[1] == 0:
+            return False
+        return True
+
     def _extract(message: UserFeedMessage):
-      return message
+        bids = message.get("bids", [])
+        asks = message.get("asks", [])
+
+        # remove 0
+        bids = filter(remove_zero, bids)
+        asks = filter(remove_zero, asks)
+
+        message["bids"] = bids # type: ignore
+        message["asks"] = asks # type: ignore
+
+        return message
 
     return _extract
 
