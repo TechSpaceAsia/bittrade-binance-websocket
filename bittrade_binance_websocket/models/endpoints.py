@@ -44,3 +44,4 @@ class BinanceEndpoints(Enum):
     SUBACCOUNT_TO_SUBACCOUNT_TRANSFER = "/sapi/v1/sub-account/transfer/subToSub"
     USER_UNIVERSAL_TRANSFER = "/sapi/v1/asset/transfer"
     SPOT_KLINE = "/api/v3/klines"
+    DEPTH = "/api/v3/depth"

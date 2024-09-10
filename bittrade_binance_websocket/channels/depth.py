@@ -8,26 +8,63 @@ from bittrade_binance_websocket.models.enhanced_websocket import EnhancedWebsock
 from bittrade_binance_websocket.models.message import UserFeedMessage
 
 def extract_data():
-
-    def remove_zero(message: Any):
-        if message[1] == 0:
-            return False
-        return True
-
     def _extract(message: UserFeedMessage):
-        bids = message.get("bids", [])
-        asks = message.get("asks", [])
-
-        # remove 0
-        bids = filter(remove_zero, bids)
-        asks = filter(remove_zero, asks)
-
-        message["bids"] = bids # type: ignore
-        message["asks"] = asks # type: ignore
-
         return message
 
     return _extract
+
+
+def accumulate_book_price(acc: UserFeedMessage, current: UserFeedMessage) -> UserFeedMessage:
+    acc["e"] = current.get("e") # type: ignore
+    acc["E"] = current.get("E")  # type: ignore
+    acc["s"] = current.get("s")  # type: ignore
+    acc["U"] = current.get("U")  # type: ignore
+    acc["u"] = current.get("u")  # type: ignore
+
+    current_asks = current.get("a", [])
+    current_bids = current.get("b", [])
+
+    asks = acc.get("a", [])
+    bids = acc.get("b", [])
+
+    if current_asks and len(asks):
+        for price in current_asks:
+            for ask_index, current_price in enumerate(asks):
+                if price[0] == current_price[0]:
+                    if not float(price[1]):
+                        asks.pop(ask_index)
+                        break
+
+                    asks[ask_index] = price
+                    break
+
+                if price[0] <= current_price[0]:
+                    asks.insert(ask_index, price)
+                    break
+    elif not len(asks):
+        asks = current_asks
+
+    if current_bids and len(bids):
+        for price in current_bids:
+            for bid_index, current_price in enumerate(bids):
+                if price[0] == current_price[0]:
+                    if not float(price[1]):
+                        bids.pop(bid_index)
+                        break
+
+                    bids[bid_index] = price
+                    break
+
+                if price[0] >= current_price[0]:
+                    bids.insert(bid_index, price)
+                    break
+    elif not len(bids):
+        bids = current_bids
+
+    acc["b"] = bids # type: ignore
+    acc["a"] = asks # type: ignore
+    return acc
+
 
 def parse_order_book_ccxt(exchange: binance):
    def _parse_order_book_ccxt(messages: UserFeedMessage):
@@ -40,6 +77,7 @@ def parse_order_book_ccxt(exchange: binance):
 def subscribe_depth(
     messages: Observable[Dict | List],
     symbol: str,
+    default_orderbook: UserFeedMessage,
     depth_level: int = 5,
     update_speed: int = 100
 ) -> Callable[[Observable[EnhancedWebsocket]], Observable[UserFeedMessage]]:
@@ -48,6 +86,7 @@ def subscribe_depth(
     return compose(
         subscribe_to_channel(messages, ticker),
         operators.map(extract_data()),
+        operators.scan(accumulate_book_price, default_orderbook),
     )
 
 
