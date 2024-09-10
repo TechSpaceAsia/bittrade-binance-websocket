@@ -15,6 +15,9 @@ def extract_data():
 
 
 def accumulate_book_price(acc: UserFeedMessage, current: UserFeedMessage) -> UserFeedMessage:
+    # if acc["u"] < current["U"]: # type: ignore
+    #     raise Exception("Invalid message order")
+    
     acc["e"] = current.get("e") # type: ignore
     acc["E"] = current.get("E")  # type: ignore
     acc["s"] = current.get("s")  # type: ignore
@@ -38,7 +41,7 @@ def accumulate_book_price(acc: UserFeedMessage, current: UserFeedMessage) -> Use
                     asks[ask_index] = price
                     break
 
-                if price[0] <= current_price[0]:
+                if price[0] <= current_price[0] and float(price[1]):
                     asks.insert(ask_index, price)
                     break
     elif not len(asks):
@@ -55,7 +58,7 @@ def accumulate_book_price(acc: UserFeedMessage, current: UserFeedMessage) -> Use
                     bids[bid_index] = price
                     break
 
-                if price[0] >= current_price[0]:
+                if price[0] >= current_price[0] and float(price[1]):
                     bids.insert(bid_index, price)
                     break
     elif not len(bids):
